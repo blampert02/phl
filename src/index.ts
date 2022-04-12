@@ -33,10 +33,11 @@ app.use('/students', studentRouter);
 app.use('/teachers', teacherRouter);
 app.use('/files', filesRouter);
 
-
 mongoose.connect(process.env.MONGO_DB_URL ?? "")
   .then(() => console.log('Connection has been established successfully'))
-  .catch(() => console.log('Unable to connect to mongodb'));
+  .catch(e => {
+    console.log(e);
+  });
 
 app.get(
   '/',
@@ -118,8 +119,10 @@ cron.schedule('*/0.5 * * * *', async () => {
   await synchronize();
 });
 
+const PORT = process.env.PORT || 8080;
+console.log(`Current port: ${PORT}`);
 
-app.listen(process.env.PORT, () => {
+app.listen(PORT, () => {
   console.log(
     chalk.blue(`Server up and running on http:localhost:${process.env.PORT} ✔`)
   );

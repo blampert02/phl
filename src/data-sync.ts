@@ -2,20 +2,6 @@ import FileSchema, { SyncInfoSchema } from "./schemas/file";
 import { firestore as getFirestoreInstance } from "./firebase";
 
 export async function synchronize() {
-  // let lastSyncedInfo = await SyncInfoSchema.findOne();
-
-  // if(lastSyncedInfo === null) {
-  //   await SyncInfoSchema.create({
-  //     lastTimeSyncedAt: Date.now()
-  //   })
-  // }
-
-  // const file = await FileSchema.findOne({ createdAt: { $gte: lastSyncedInfo.lastTimeSyncedAt} });
-
-  // if(file === null) {
-  //   console.log('Nothing to sync');
-  //   return;
-  // }
   console.log(':D');
   const firestore = getFirestoreInstance();
   const collection = firestore.collection('filesMetadata');
