@@ -1,0 +1,13 @@
+        <div class="col">
+            <form action="/files/upload" method="post" enctype="multipart/form-data">
+                <input for="formFileSm" class="form-control" type="file" id="formFileMultiple" multiple="multiple" name = 'file_data'>
+                <p></p>
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    <input class="btn btn-outline-primary" type="submit">
+                </div>
+            </form>
+        </div>   
+                        <div>
+                            <button class="btn btn-outline-primary btn-sm" style="margin: 5px; ">Add new Folder Level</button>
+                            <button class="btn btn-outline-danger btn-sm" style="margin: 5px;">Remove a Folder Level</button>
+                        </div>

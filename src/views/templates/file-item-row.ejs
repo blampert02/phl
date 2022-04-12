@@ -1,0 +1,106 @@
+<tbody>
+    <tr>
+        <td>
+            <a href="<%= item.downloadUrl !== undefined ? item.downloadUrl : `files${item.path}${item.name}` %>"
+                class="btn btn-light">
+                <% if (item.downloadUrl === undefined ) { %>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-folder" viewbox="0 0 16 16">
+                        <path
+                            d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4H2.19zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707z" />
+                    </svg>
+                    <% } else { %>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+                            <path fill-rule="evenodd"
+                                d="M3.75 1.5a.25.25 0 00-.25.25v11.5c0 .138.112.25.25.25h8.5a.25.25 0 00.25-.25V6H9.75A1.75 1.75 0 018 4.25V1.5H3.75zm5.75.56v2.19c0 .138.112.25.25.25h2.19L9.5 2.06zM2 1.75C2 .784 2.784 0 3.75 0h5.086c.464 0 .909.184 1.237.513l3.414 3.414c.329.328.513.773.513 1.237v8.086A1.75 1.75 0 0112.25 15h-8.5A1.75 1.75 0 012 13.25V1.75z">
+                            </path>
+                        </svg>
+                        <% } %>
+                            <%= item.name %>
+            </a>
+        </td>
+        
+        <td>
+            <button data-bs-toggle="modal" data-bs-target="#deleteModal<%= item.name %>"
+                class="badge bg-secondary-outline rounded-pill">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+                    <path fill-rule="evenodd"
+                        d="M6.5 1.75a.25.25 0 01.25-.25h2.5a.25.25 0 01.25.25V3h-3V1.75zm4.5 0V3h2.25a.75.75 0 010 1.5H2.75a.75.75 0 010-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75zM4.496 6.675a.75.75 0 10-1.492.15l.66 6.6A1.75 1.75 0 005.405 15h5.19c.9 0 1.652-.681 1.741-1.576l.66-6.6a.75.75 0 00-1.492-.149l-.66 6.6a.25.25 0 01-.249.225h-5.19a.25.25 0 01-.249-.225l-.66-6.6z">
+                    </path>
+                </svg>
+            </button>
+
+        </td>
+        <!-- <td>
+            <button data-bs-toggle="modal" data-bs-target="#selectNameModal<%= item.name %>"
+                class="badge bg-secondary-outline rounded-pill">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+                    <path fill-rule="evenodd"
+                        d="M11.013 1.427a1.75 1.75 0 012.474 0l1.086 1.086a1.75 1.75 0 010 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 01-.927-.928l.929-3.25a1.75 1.75 0 01.445-.758l8.61-8.61zm1.414 1.06a.25.25 0 00-.354 0L10.811 3.75l1.439 1.44 1.263-1.263a.25.25 0 000-.354l-1.086-1.086zM11.189 6.25L9.75 4.81l-6.286 6.287a.25.25 0 00-.064.108l-.558 1.953 1.953-.558a.249.249 0 00.108-.064l6.286-6.286z">
+                    </path>
+                </svg>
+                </form>
+        </td> -->
+    </tr>
+</tbody>
+
+<!--Modal-->
+<div class="modal fade" id="deleteModal<%= item.name %>" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Warning</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span style="margin-bottom: 100px;">
+                    Do you really want to delete
+                    <%= item.name %>?
+                </span>
+                <p></p>
+                <form role="form" method="POST" action="/files/delete">
+                    <input class="form-control input-lg" name="filename" style="display: none;"
+                        value="<%= item.name %>">
+                    <input class="form-control input-lg" name="id" style="display: none;" value="<%= item.id %>">
+                    <input class="form-control input-lg" name="type" style="display: none;" value="<%= item.downloadUrl === undefined ? 'directory' : 'file' %>">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal-->
+<div class="modal fade" id="selectNameModal<%= item.name %>" tabindex="-1" aria-labelledby="selectNameModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="selectNameModalLabel">Create folder</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form role="form" method="POST" action="/files/update">
+                    <input type="hidden" name="_token" value="">
+                    <div class="form-group">
+                        <label class="control-label">Updating
+                            <%= item.name %>'s name
+                        </label>
+                        <p></p>
+                        <div>
+                            <input type="text" class="form-control input-lg" name="name" placeholder="Folder name">
+                            <input class="form-control input-lg" name="path" style="display: none;"
+                                value="<%= path %>">
+                                <input class="form-control input-lg" name="parentDirectoryId" style="display: none;"
+                                value="<%= directoryId %>">
+                            <button style="margin-top: 16px;" type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <button style="margin-top: 16px;" type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>

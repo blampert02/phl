@@ -1,0 +1,33 @@
+<tbody>
+    <tr>
+        <th scope="row">1</th>
+        <td>
+            <%= teacher.firstName %>
+        </td>
+        <td>
+            <%= teacher.lastName %>
+        </td>
+        <td>
+            <%= teacher.phoneNumber %>
+        </td>
+        <td>
+            <%= teacher.inss %>
+        </td>
+        <td>
+            <%= teacher.email %>
+        </td>
+        <td>
+            <%= teacher.address %>
+        </td>
+        <td>
+            <form action="<%= teacher.editPath %>">
+                <button id="EditTeachersButton" type="submit" class="btn btn-outline-primary">Edit</button>
+            </form>
+        </td>
+        <td>
+            <form action="<%= teacher.deletePath %>" method="post">
+                <button type="submit" class="btn btn-outline-danger">Remove</button>
+            </form>
+        </td>
+    </tr>
+</tbody>

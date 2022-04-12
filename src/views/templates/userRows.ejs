@@ -1,0 +1,29 @@
+<tbody>
+    <tr>
+        <th scope="row">
+            1
+        </th>
+        <td>
+            <%= user.firstName %>
+        </td>
+        <td>
+            <%= user.lastName %>
+        </td>
+        <td>
+            <%= user.level %>
+        </td>
+        <td>
+            <%= user.score %>
+        </td>
+        <td>
+            <form action="<%= user.editPath %>" method="get">
+                <button id="EditStudentsButton" type="submit" class="btn btn-outline-primary">Edit</button>
+            </form>
+        </td>
+        <td>
+            <form action="<%= user.deletePath %>" method="post">
+                <button type="submit" class="btn btn-outline-danger">Remove</button>
+            </form>
+        </td>
+    </tr>
+</tbody>
