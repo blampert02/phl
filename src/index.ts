@@ -12,13 +12,10 @@ import { synchronize } from "./data-sync";
 import studentRouter from './routers/students';
 import teacherRouter from './routers/teachers';
 import filesRouter from './routers/files';
-
 import repository from './repositories/user';
+import { AddressInfo } from "net";
 
-dotenv.config(); 
-console.log(process.env.MONGO_DB_URL);
-
-const app: Application = express();
+const app = express();
 
 app.set('views', Path.join(__dirname, './views'));
 app.set('view engine', 'ejs');
@@ -28,15 +25,26 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
-
 app.use('/students', studentRouter);
 app.use('/teachers', teacherRouter);
 app.use('/files', filesRouter);
 
-mongoose.connect(process.env.MONGO_DB_URL ?? "")
-  .then(() => console.log('Connection has been established successfully'))
+const dotEnvResult = dotenv.config();
+
+if(dotEnvResult.error) {
+  console.error('The environment variables could not be loaded ❌');
+  console.error(dotEnvResult.error.message);
+}
+
+console.log('Environment variables has been loaded successfully ✔');
+
+mongoose.connect(process.env.MONGO_DB_URL!)
+  .then(() => {
+    console.log('Connected to MongoDB successfully ✔');
+  })
   .catch(e => {
-    console.log(e);
+    console.error('Something went wrong during establishing a connection to MongoDB ❌');
+    console.error(e.message);
   });
 
 app.get(
@@ -57,25 +65,6 @@ app.get('/login', (req: Request, res: Response) => {
   }
 });
 
-app.get('/test', async (_req: Request, res: Response) => {
-  await repository.save({
-    id: '1',
-    firstName: 'blampert',
-    lastName: 'swampert',
-    email: 'blampert@gmail.com',
-    password: 'ilovepotatoes123',
-    isActive: true,
-    address: 'acahualinca',
-    type: 'student',
-    city: 'Managua',
-    level: 5,
-    birthDate: new Date(Date.now()),
-  });
-  
-  const users = await repository.fetchAllByType('student');
-  return res.status(200).json(users);
-});
-
 app.post('/authenticate', async (req: Request, res: Response) => {
   const {
     username,
@@ -84,6 +73,7 @@ app.post('/authenticate', async (req: Request, res: Response) => {
     username: string;
     password: string;
   } = req.body;
+  
   const user = await repository.findByUsernameAndPassword(username, password);
 
   if (user !== undefined) {
@@ -119,11 +109,9 @@ cron.schedule('*/0.5 * * * *', async () => {
   await synchronize();
 });
 
-const PORT = process.env.PORT || 8080;
-console.log(`Current port: ${PORT}`);
-
-app.listen(PORT, () => {
-  console.log(
-    chalk.blue(`Server up and running on http:localhost:${process.env.PORT} ✔`)
-  );
+const server = app.listen(process.env.PORT, () => {
+  const { address, port } = server.address() as AddressInfo;
+  console.log(chalk.blue(`Server up and running on http:${address}:${port} 🚀`));
 });
+
+console.table(dotEnvResult.parsed);
