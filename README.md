@@ -1,6 +1,6 @@
 # Edmodo Clone
 
-A side project created with the main purpose of learning a new technology. This project isn't be an exactly clone of Edmodo.
+A side project created with the main purpose of learning a new technology. 
 
 ## Features
 
