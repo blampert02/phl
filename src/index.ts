@@ -57,6 +57,10 @@ app.get(
   }
 );
 
+app.get('/privacy', (_req: Request, res: Response) => {
+  return res.render('privacy');
+});
+
 app.get('/login', (req: Request, res: Response) => {
   if (req.cookies['auth']) {
     res.redirect('/');
