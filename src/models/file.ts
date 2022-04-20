@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 
-export const MATCH_SPECIAL_CHARACTERS_REGEX = "/[-[/]{}()*+?.,^$|#\s]/g";
+export const MATCH_SPECIAL_CHARACTERS_REGEX = /[^a-zA-Z ]/g;
 
 export type Directory = {
   id: string;

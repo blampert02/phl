@@ -103,7 +103,6 @@ export class DirectoryRepository {
 		const documents = await FileSchema.find({ parentId: directory.id });
 
 		if(documents === undefined) return undefined;
-		console.log(documents);
 
 		const content: (Directory | LocalFile)[] = documents.map(doc => {
 			if(doc.type === 'file') {
@@ -139,6 +138,8 @@ export class DirectoryRepository {
 				return directory;
 			}
 		});
+
+		console.log(content);
 
 		return {
 			...directory,
