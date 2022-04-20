@@ -16,7 +16,8 @@ export async function signUp(
     const user = createUser(authRecord.uid, type, profileData);
     console.log(user);
     await repository.save(user);
-  } catch {
+  } catch(e) {
+    console.error(e);
     return undefined;
   }
 }

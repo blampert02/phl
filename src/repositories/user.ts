@@ -35,6 +35,7 @@ class UserRepository {
   }
 
   async deleteById(id: string): Promise<void> {
+    console.log();
     await this.collection.doc(id).delete();
   }
 

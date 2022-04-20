@@ -6,6 +6,7 @@ import verifyCookies, {
 import repository from '../repositories/user';
 import { signUp } from '../auth';
 import { createUser } from '../models/user';
+import { nanoid } from 'nanoid';
 
 const router = express.Router();
 
@@ -29,6 +30,13 @@ router.get(
     res.render('students', { user, students });
   }
 );
+
+router.post('/delete', async (req: Request, res: Response) => {
+  const id = req.query.id;
+  console.log('Given ID: ' + id);
+  await repository.deleteById(<string>id);
+  return res.redirect('/students');
+});
 
 router.post(
   '/:id',
@@ -83,14 +91,9 @@ router.get(
 );
 
 router.post('/', async (req: Request, res: Response) => {
+  console.log('RECEIVED!!');
   await signUp(req.body.email, req.body.password, 'student', req.body);
   return res.redirect('/students');
-});
-
-router.post('/delete', async (req: Request, res: Response) => {
-  const id = req.query.id as string;
-  await repository.deleteById(id);
-  res.redirect('/students');
 });
 
 export default router;
