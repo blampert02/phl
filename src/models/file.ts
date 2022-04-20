@@ -1,11 +1,14 @@
 import { nanoid } from 'nanoid';
 
+export const MATCH_SPECIAL_CHARACTERS_REGEX = "/[-[/]{}()*+?.,^$|#\s]/g";
+
 export type Directory = {
   id: string;
   name: string;
   content: (LocalFile | Directory)[];
   parentDirectoryId: string;
   path?: string;
+  internalName: string;
 }
 
 export type LocalFile = {
@@ -14,6 +17,7 @@ export type LocalFile = {
   downloadUrl: string;
   parentDirectoryId: string;
   path?: string;
+  internalName: string;
 };
 
 
@@ -22,7 +26,8 @@ export function createDirectory(name: string, parentDirectoryId: string): Direct
     id: nanoid(16),
     name,
     parentDirectoryId,
-    content: []
+    content: [],
+    internalName: name.replace(MATCH_SPECIAL_CHARACTERS_REGEX, '')
   }
 }
 
@@ -31,6 +36,7 @@ export function createFile(name: string, downloadUrl: string, parentDirectoryId:
     id: nanoid(16),
     name,
     downloadUrl,
-    parentDirectoryId
+    parentDirectoryId,
+    internalName: name.replace(MATCH_SPECIAL_CHARACTERS_REGEX, '')
   }
 }

@@ -1,5 +1,5 @@
 import firebaseAdmin, { firestore } from 'firebase-admin';
-import { LocalFile, Directory } from '../models/file';
+import { LocalFile, Directory, MATCH_SPECIAL_CHARACTERS_REGEX } from '../models/file';
 import FileSchema from '../schemas/file';
 
 export type ContentFirebaseModel = {
@@ -64,7 +64,8 @@ export class DirectoryRepository {
 			name: document.name,
 			content: [],
 			parentDirectoryId: document.parentId,
-			path: document.path
+			path: document.path,
+			internalName: document.name.replace(MATCH_SPECIAL_CHARACTERS_REGEX, '')
 		}
 	}
 
@@ -93,7 +94,8 @@ export class DirectoryRepository {
 			name: document.name,
 			content: [],
 			parentDirectoryId: document.parentId,
-			path: document.path
+			path: document.path,
+			internalName: document.name.replace(MATCH_SPECIAL_CHARACTERS_REGEX, '')
 		}
 	}
 
@@ -118,7 +120,8 @@ export class DirectoryRepository {
 					name: name,
 					downloadUrl: doc.downloadUrl,
 					parentDirectoryId: doc.parentId,
-					path: doc.path
+					path: doc.path,
+					internalName: doc.name.replace(MATCH_SPECIAL_CHARACTERS_REGEX, '')
 				}
 
 				return file;
@@ -129,7 +132,8 @@ export class DirectoryRepository {
 					name: doc.name,
 					parentDirectoryId: doc.parentId,
 					content: [],
-					path: doc.path
+					path: doc.path,
+					internalName: doc.name.replace(MATCH_SPECIAL_CHARACTERS_REGEX, '')
 				}
 
 				return directory;
