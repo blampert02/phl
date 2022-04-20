@@ -1,6 +1,6 @@
 # Edmodo Clone
 
-A side project created with the main purpose of learning a new technology. This project isn't be an exactly clone of Edmodo.
+A side project created with the main purpose of learning a new technology. 
 
 ## Features
 
@@ -25,7 +25,7 @@ You just need to have **Node** installed on your computer to run this project, a
 Clone the project
 
 ```bash
-git clone https://github.com/dylangrijalva/edmodo-clone-app
+git clone https://github.com/blampert02/phl.git
 ```
 
 Go to the project directory
@@ -50,7 +50,3 @@ npm start
 ```bash
 npm run dev
 ```
-
-## Authors
-
-[@dylangrijalva](https://github.com/dylangrijalva) 😘
