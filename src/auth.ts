@@ -5,6 +5,14 @@ import repository from './repositories/user';
 
 const firebaseAuth = firebaseAdmin.auth();
 
+export async function deleteAccountById(uid: string) {
+  try {
+    firebaseAuth.deleteUser(uid);
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 export async function signUp(
   email: string,
   password: string,

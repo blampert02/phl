@@ -4,7 +4,7 @@ import verifyCookies, {
 } from '../middlewares/verifyCookies';
 
 import repository from '../repositories/user';
-import { signUp } from '../auth';
+import { signUp, deleteAccountById } from '../auth';
 
 const router = express.Router();
 
@@ -38,17 +38,15 @@ router.get(
   }
 );
 
-
-
-
 router.post('/', async (req: Request, res: Response) => {
   await signUp(req.body.email, req.body.password, 'teacher', req.body);
   res.redirect('/teachers');
 });
 
 router.post('/delete', async (req: Request, res: Response) => {
-  const id = req.query.id as string;
+  const id = <string> req.query.id;
   await repository.deleteById(id);
+  await deleteAccountById(id);
   res.redirect('/teachers');
 });
 

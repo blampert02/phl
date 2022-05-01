@@ -4,7 +4,7 @@ import verifyCookies, {
 } from '../middlewares/verifyCookies';
 
 import repository from '../repositories/user';
-import { signUp } from '../auth';
+import { signUp, deleteAccountById } from '../auth';
 import { createUser } from '../models/user';
 import { nanoid } from 'nanoid';
 
@@ -32,9 +32,10 @@ router.get(
 );
 
 router.post('/delete', async (req: Request, res: Response) => {
-  const id = req.query.id;
+  const id = <string>req.query.id;
   console.log('Given ID: ' + id);
-  await repository.deleteById(<string>id);
+  await repository.deleteById(id);
+  await deleteAccountById(id);
   return res.redirect('/students');
 });
 
