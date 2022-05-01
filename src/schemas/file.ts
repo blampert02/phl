@@ -10,6 +10,7 @@ const syncInfoSchema = new Schema({
 
 const fileSchema = new Schema({
   name: String, 
+  rawName: String,
   path: String,
   downloadUrl: {
     type: String,

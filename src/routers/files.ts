@@ -21,7 +21,7 @@ router.get(
     const user = req.cookies['auth']['user'];
     // Check if the requested path is the root directory
     if(req.path === '/') {
-      const directory = await repository.FindRootDirectory();
+      const directory = await repository.findRootDirectory();
       
       if(directory === undefined) {
         const newDirectory = createDirectory('root', 'root');
@@ -111,12 +111,18 @@ router.post('/update', async (req: Request, res: Response) => {
 });
 
 router.post('/delete', async (req: Request, res: Response) => {
-  await repository.delete(req.body.id);
-
   if(req.body.type === 'file') {
-    const fileRef = bucket.file(`storage/${req.body.filename}`);
+    const filename = await repository.findNameById(req.body.id);
+  
+    if (!filename) res.redirect(`files${req.body.path}`);
+
+    console.log(`Found filename: ${filename}`);
+    const fileRef = bucket.file(`storage/${filename}`);
+
     await fileRef.delete();
   }
+
+  await repository.delete(req.body.id);
 
   return res.redirect(`files${req.body.path}`);
 });

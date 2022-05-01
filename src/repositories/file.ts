@@ -22,7 +22,8 @@ export class DirectoryRepository {
 				type: type,
 				parentId: item.parentDirectoryId,
 				name: item.name.replace(/\s/g, '').replace('/', ''),
-				downloadUrl: item.downloadUrl
+				downloadUrl: item.downloadUrl,
+				rawName: item.name
 			});
 
 			await document.save();
@@ -54,7 +55,7 @@ export class DirectoryRepository {
 		return;
 	}
 
-	async FindRootDirectory(): Promise<Directory | undefined> {
+	async findRootDirectory(): Promise<Directory | undefined> {
 		const document = await FileSchema.findOne({ path: '/' });
 
 		if(document == undefined) return undefined;
@@ -145,6 +146,12 @@ export class DirectoryRepository {
 			...directory,
 			content
 		}
+	}
+
+	async findNameById(id: string): Promise<string | undefined> {
+		const document = await FileSchema.findById({  _id: id })
+		console.table(document);
+		return document !== null ? document.rawName : undefined;
 	}
 
 	async delete(id: string): Promise<void> {
