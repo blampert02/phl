@@ -31,6 +31,8 @@ export async function synchronize() {
       id: doc.id,
       name: doc.name,
       type: doc.type,
+      path: doc.path,
+      rawName: doc.rawName,
       parentId: doc.parentId,
       createdAt: doc.createdAt
     }
