@@ -37,8 +37,8 @@
                         <center>
                             <h3 style="font-style:italic;">Potter's House Document</h3>
                         </center>
-                        <button data-bs-toggle="modal" data-bs-target="#CreateFolderNodal" class="btn btn-outline-secondary"
-                            style="margin: 5px; ">
+                        <button data-bs-toggle="modal" data-bs-target="#CreateFolderNodal"
+                            class="btn btn-outline-secondary" style="margin: 5px; ">
                             <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 16 16" width="16" height="16">
                                 <path fill-rule="evenodd"
                                     d="M13.25 2.5H2.75a.25.25 0 00-.25.25v10.5c0 .138.112.25.25.25h10.5a.25.25 0 00.25-.25V2.75a.25.25 0 00-.25-.25zM2.75 1h10.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0113.25 15H2.75A1.75 1.75 0 011 13.25V2.75C1 1.784 1.784 1 2.75 1zM8 4a.75.75 0 01.75.75v2.5h2.5a.75.75 0 010 1.5h-2.5v2.5a.75.75 0 01-1.5 0v-2.5h-2.5a.75.75 0 010-1.5h2.5v-2.5A.75.75 0 018 4z">
@@ -48,14 +48,14 @@
                         </button>
                     </div>
 
-                    <div class="limit" style="height: 500px;">
+                    <div class="limit">
 
                         <!--Dropbox interface-->
 
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th scope="col">Folder</th>
+                                    <th scope="col">Folder List</th>
                                     <th scope="col"></th>
                                 </tr>
                             </thead>
@@ -73,12 +73,11 @@
                                 class="input-group">
                                 <input name="file_data" type="file" class="form-control" id="inputGroupFile04"
                                     aria-describedby="inputGroupFileAddon04" aria-label="Upload">
-                                    <input class="form-control input-lg" name="parentDirectoryId" style="display: none;"
+                                <input class="form-control input-lg" name="parentDirectoryId" style="display: none;"
                                     value="<%= directoryId %>">
                                 <input type="submit" class="btn btn-outline-secondary" id="inputGroupFileAddon04">
-                                <input class="form-control input-lg" name="type" style="display: none;"
-                                value="file">
-                                    <input class="form-control input-lg" name="path" style="display: none;"
+                                <input class="form-control input-lg" name="type" style="display: none;" value="file">
+                                <input class="form-control input-lg" name="path" style="display: none;"
                                     value="<%= path %>">
                             </form>
                         </div>
@@ -96,6 +95,7 @@
                             <h5 class="modal-title" id="CreateFolderNodalLabel">Create folder</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
+
                         <div class="modal-body">
                             <form role="form" method="POST" action="/files/upload">
                                 <input type="hidden" name="_token" value="">
@@ -107,8 +107,8 @@
                                             placeholder="Folder name">
                                         <input class="form-control input-lg" name="path" style="display: none;"
                                             value="<%= path %>">
-                                        <input class="form-control input-lg" name="parentDirectoryId" style="display: none;"
-                                            value="<%= directoryId %>">
+                                        <input class="form-control input-lg" name="parentDirectoryId"
+                                            style="display: none;" value="<%= directoryId %>">
                                         <input class="form-control input-lg" name="type" style="display: none;"
                                             value="directory">
                                         <button style="margin-top: 16px;" type="button" class="btn btn-secondary"
@@ -118,8 +118,8 @@
                                     </div>
                                 </div>
                             </form>
+
                         </div>
-                        <div class="modal-footer"></div>
                     </div>
                 </div>
             </div>

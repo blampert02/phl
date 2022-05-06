@@ -14,9 +14,12 @@ import teacherRouter from './routers/teachers';
 import filesRouter from './routers/files';
 import repository from './repositories/user';
 import { AddressInfo } from "net";
+import cors from "cors"
+
 
 const app = express();
-
+app.use(cors());
+app.use( express.static( "public" ) );
 app.set('views', Path.join(__dirname, './views'));
 app.set('view engine', 'ejs');
 app.use(express.static(Path.join(__dirname, './public')));
@@ -28,6 +31,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/students', studentRouter);
 app.use('/teachers', teacherRouter);
 app.use('/files', filesRouter);
+
 
 const dotEnvResult = dotenv.config();
 
@@ -109,7 +113,7 @@ app.get('/unauthorized', verifyCookies, (req: Request, res: Response) => {
   return res.render('unauthorized');
 });
 
-cron.schedule('*/0.5 * * * *', async () => {
+cron.schedule('*/0.1 * * * *', async () => {
   await synchronize();
 });
 
