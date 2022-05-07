@@ -3,12 +3,12 @@ import { LocalFile, Directory, MATCH_SPECIAL_CHARACTERS_REGEX } from '../models/
 import FileSchema from '../schemas/file';
 
 export type ContentFirebaseModel = {
-	path: string; 
+	path: string;
 	id: string;
 	name: string;
-	type: 'directory' | 'file',
+	type: 'directory' | 'file';
 	parentDirectoryId: string;
-}
+};
 
 function isLocalFile(object: any): object is LocalFile {
 	return 'downloadUrl' in object;
@@ -16,49 +16,49 @@ function isLocalFile(object: any): object is LocalFile {
 
 export class DirectoryRepository {
 	async create(type: string, path: string, item: LocalFile | Directory): Promise<void> {
-		if(isLocalFile(item)) {
+		if (isLocalFile(item)) {
 			const document = new FileSchema({
 				path: path,
 				type: type,
 				parentId: item.parentDirectoryId,
 				name: item.name.replace(/\s/g, '').replace('/', ''),
 				downloadUrl: item.downloadUrl,
-				rawName: item.name
+				rawName: item.name,
 			});
 
 			await document.save();
 
 			return;
 		}
-		
-		if(!item.name) return;
 
-		path = path.endsWith("/") && path.length == 1 ? path : path + '/'; 
+		if (!item.name) return;
+
+		path = path.endsWith('/') && path.length == 1 ? path : path + '/';
 
 		item.name = item.name.replace(/\s/g, '').replace('/', '');
 
 		const existingDocument = await FileSchema.findOne({
-			$and: [{ path: { $eq: path } }, { name: { $eq: item.name } }]
+			$and: [{ path: { $eq: path } }, { name: { $eq: item.name } }],
 		});
 
-		if(existingDocument) return;
+		if (existingDocument) return;
 
 		const document = new FileSchema({
 			path: path,
 			type: type,
 			parentId: item.parentDirectoryId,
-			name: item.name.replace(/\s/g, '').replace('/', '')
+			name: item.name.replace(/\s/g, '').replace('/', ''),
 		});
 
 		await document.save();
-		
+
 		return;
 	}
 
 	async findRootDirectory(): Promise<Directory | undefined> {
 		const document = await FileSchema.findOne({ path: '/' });
 
-		if(document == undefined) return undefined;
+		if (document == undefined) return undefined;
 
 		return {
 			id: document._id,
@@ -66,8 +66,8 @@ export class DirectoryRepository {
 			content: [],
 			parentDirectoryId: document.parentId,
 			path: document.path,
-			internalName: document.name.replace(MATCH_SPECIAL_CHARACTERS_REGEX, '')
-		}
+			internalName: document.name.replace(MATCH_SPECIAL_CHARACTERS_REGEX, ''),
+		};
 	}
 
 	async findDirectoryByPath(path: string): Promise<Directory | undefined> {
@@ -85,10 +85,10 @@ export class DirectoryRepository {
 		console.log('path: ' + path);
 
 		const document = await FileSchema.findOne({
-			$and: [{ path: { $eq: path } }, { name: { $eq: directoryName } }]
+			$and: [{ path: { $eq: path } }, { name: { $eq: directoryName } }],
 		});
 
-		if(document === null) return undefined;
+		if (document === null) return undefined;
 
 		return {
 			id: document._id,
@@ -96,21 +96,21 @@ export class DirectoryRepository {
 			content: [],
 			parentDirectoryId: document.parentId,
 			path: document.path,
-			internalName: document.name.replace(MATCH_SPECIAL_CHARACTERS_REGEX, '')
-		}
+			internalName: document.name.replace(MATCH_SPECIAL_CHARACTERS_REGEX, ''),
+		};
 	}
 
-  async findContentByDirectory(directory: Directory): Promise<Directory | undefined> { 
+	async findContentByDirectory(directory: Directory): Promise<Directory | undefined> {
 		const documents = await FileSchema.find({ parentId: directory.id });
 
-		if(documents === undefined) return undefined;
+		if (documents === undefined) return undefined;
 
 		const content: (Directory | LocalFile)[] = documents.map(doc => {
-			if(doc.type === 'file') {
+			if (doc.type === 'file') {
 				let name = doc.name;
 
-				if(doc.name.length > 40) {
-					const position = doc.name.lastIndexOf(".");
+				if (doc.name.length > 40) {
+					const position = doc.name.lastIndexOf('.');
 					const extension = doc.name.substring(position, doc.name.length);
 					name = doc.name.substring(0, 20) + extension;
 				}
@@ -121,11 +121,10 @@ export class DirectoryRepository {
 					downloadUrl: doc.downloadUrl,
 					parentDirectoryId: doc.parentId,
 					path: doc.path,
-					internalName: doc.name.replace(MATCH_SPECIAL_CHARACTERS_REGEX, '')
-				}
+					internalName: doc.name.replace(MATCH_SPECIAL_CHARACTERS_REGEX, ''),
+				};
 
 				return file;
-
 			} else {
 				const directory: Directory = {
 					id: doc._id,
@@ -133,8 +132,8 @@ export class DirectoryRepository {
 					parentDirectoryId: doc.parentId,
 					content: [],
 					path: doc.path,
-					internalName: doc.name.replace(MATCH_SPECIAL_CHARACTERS_REGEX, '')
-				}
+					internalName: doc.name.replace(MATCH_SPECIAL_CHARACTERS_REGEX, ''),
+				};
 
 				return directory;
 			}
@@ -144,12 +143,12 @@ export class DirectoryRepository {
 
 		return {
 			...directory,
-			content
-		}
+			content,
+		};
 	}
 
 	async findNameById(id: string): Promise<string | undefined> {
-		const document = await FileSchema.findById({  _id: id })
+		const document = await FileSchema.findById({ _id: id });
 		console.table(document);
 		return document !== null ? document.rawName : undefined;
 	}
@@ -157,9 +156,9 @@ export class DirectoryRepository {
 	async delete(id: string): Promise<void> {
 		const document = await FileSchema.findOne({ _id: id });
 
-		if(!document) return;
+		if (!document) return;
 
-		if(document.type === 'file') {
+		if (document.type === 'file') {
 			await FileSchema.deleteOne({ _id: id });
 			return;
 		}
@@ -167,15 +166,15 @@ export class DirectoryRepository {
 		const path = document.path + document.name + '/';
 		console.log('path to delete: ' + path);
 		await FileSchema.deleteOne({ _id: id });
-		await FileSchema.deleteMany({ path: { $regex: path }});
+		await FileSchema.deleteMany({ path: { $regex: path } });
 	}
 
 	async update(name: string, id: string): Promise<void> {
 		const document = await FileSchema.findOne({ _id: id });
 
-		if(!document) return;
+		if (!document) return;
 
-		if(document.type === 'file') {
+		if (document.type === 'file') {
 			await FileSchema.updateOne({ _id: id });
 			return;
 		}
@@ -184,7 +183,23 @@ export class DirectoryRepository {
 		const newFolderPath = document.path + name + '/';
 
 		await FileSchema.updateOne({ _id: id }, { $set: { name: name } });
-		await FileSchema.updateMany({ path: { $regex: folderPath }}, { $set: { path: newFolderPath } });
+		await FileSchema.updateMany({ path: { $regex: folderPath } }, { $set: { path: newFolderPath } });
+	}
+
+	async findAll() {
+		const documents = await FileSchema.find();
+
+		return documents.map(doc => {
+			return {
+				id: doc._id,
+				name: doc.name,
+				parentId: doc.parentId,
+				path: doc.path,
+				rawName: doc.rawName,
+				type: doc.type,
+				createdAt: doc.createdAt,
+			};
+		});
 	}
 }
 
