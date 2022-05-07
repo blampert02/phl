@@ -109,7 +109,7 @@ app.get('/unauthorized', verifyCookies, (req: Request, res: Response) => {
   return res.render('unauthorized');
 });
 
-cron.schedule('*/0.2 * * * *', async () => {
+cron.schedule('*/0.5 * * * *', async () => {
   await synchronize();
 });
 
