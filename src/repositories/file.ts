@@ -109,7 +109,7 @@ export class DirectoryRepository {
 			if(doc.type === 'file') {
 				let name = doc.name;
 
-				if(doc.name.length > 24) {
+				if(doc.name.length > 40) {
 					const position = doc.name.lastIndexOf(".");
 					const extension = doc.name.substring(position, doc.name.length);
 					name = doc.name.substring(0, 20) + extension;
