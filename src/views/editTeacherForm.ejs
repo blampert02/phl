@@ -35,7 +35,7 @@
 
         <main id="main" class="main">
             <div class="container">
-                <form class="row g-3" action="/teachers" method="post">
+                <form class="row g-3" action="/teachers/<%= user.id %>" method="post">
                     <div class="col-md-6">
                         <label for="inputName" class="form-label">Name</label>
                         <input type="text" class="form-control" name="firstName" placeholder="Name" id="inputName" value="<%= user.firstName %>" required="true">

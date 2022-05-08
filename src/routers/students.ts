@@ -16,19 +16,13 @@ router.get('/', verifyCookies, verifyUserAccountStatus, async (req: Request, res
   students = students.map(student => {
 
     return {
-
       ...student,
-      deletePath: `/students/delete?id=${student.id
-        }`,
-      editPath: `/students/${student.id
-        }`
-
+      deletePath: `/students/delete?id=${student.id}`,
+      editPath: `/students/${student.id}`
     };
-
   });
 
   res.render('students', { user, students });
-
 });
 
 router.post('/delete', async (req: Request, res: Response) => {
@@ -47,7 +41,6 @@ router.post('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request,
   const userInfo = createUser(id, 'student', req.body);
   await repository.update(id, userInfo);
   return res.redirect('/students');
-
 });
 
 router.get('/add', verifyCookies, verifyUserAccountStatus, (req: Request, res: Response) => {
@@ -81,10 +74,8 @@ router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, 
 
 router.post('/', async (req: Request, res: Response) => {
 
-  console.log('RECEIVED!!');
   await signUp(req.body.email, req.body.password, 'student', req.body);
   return res.redirect('/students');
-
 });
 
 export default router;

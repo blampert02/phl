@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import verifyCookies, { verifyUserAccountStatus } from '../middlewares/verifyCookies';
-
+import { createUser } from '../models/user';
 import repository from '../repositories/user';
 import { signUp, deleteAccountById } from '../auth';
 
@@ -19,13 +19,9 @@ router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, 
   const user = await repository.findByIdAndType(id, 'teacher');
 
   if (user === undefined) {
-
     return res.status(404).json({ message: 'The requested resource was not found', status: 404, type: 'not_found' });
-
   }
-
-  res.render('editTeachertForm', { user });
-
+  res.render('editTeacherForm', { user });
 });
 
 router.post('/', async (req: Request, res: Response) => {
@@ -44,6 +40,14 @@ router.post('/delete', async (req: Request, res: Response) => {
 
 });
 
+router.post('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {
+
+  const id = req.params.id;
+  const userInfo = createUser(id, 'teacher', req.body);
+  await repository.update(id, userInfo);
+  return res.redirect('/teachers');
+});
+
 router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {
 
   const id = req.params.id;
@@ -52,10 +56,8 @@ router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, 
   if (user === undefined) {
 
     return res.status(404).json({ message: 'The requested resource was not found', status: 404, type: 'not_found' });
-
   }
   return res.status(200).json(user);
-
 });
 
 router.get('/', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {
@@ -66,19 +68,13 @@ router.get('/', verifyCookies, verifyUserAccountStatus, async (req: Request, res
   teachers = teachers.map(teacher => {
 
     return {
-
       ...teacher,
-      deletePath: `/teachers/delete?id=${teacher.id
-        }`,
-      editPath: `/teachers/${teacher.id
-        }`
-
+      deletePath: `/teachers/delete?id=${teacher.id}`,
+      editPath: `/teachers/${teacher.id}`
     };
-
   });
 
   res.render('teachers', { user, teachers });
-
 });
 
 export default router;
