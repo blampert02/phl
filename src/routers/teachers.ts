@@ -1,100 +1,84 @@
 import express, { Request, Response } from 'express';
-import verifyCookies, {
-  verifyUserAccountStatus,
-} from '../middlewares/verifyCookies';
+import verifyCookies, { verifyUserAccountStatus } from '../middlewares/verifyCookies';
 
 import repository from '../repositories/user';
 import { signUp, deleteAccountById } from '../auth';
 
 const router = express.Router();
 
-router.get(
-  '/add',
-  verifyCookies,
-  verifyUserAccountStatus,
-  (req: Request, res: Response) => {
-    const user = req.cookies['auth']['user'];
-    res.render('addTeachersForm', { user });
+router.get('/add', verifyCookies, verifyUserAccountStatus, (req: Request, res: Response) => {
+
+  const user = req.cookies['auth']['user'];
+  res.render('addTeachersForm', { user });
+
+});
+
+router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {
+
+  const id = req.params.id;
+  const user = await repository.findByIdAndType(id, 'teacher');
+
+  if (user === undefined) {
+
+    return res.status(404).json({ message: 'The requested resource was not found', status: 404, type: 'not_found' });
+
   }
-);
 
-router.get(
-  '/:id',
-  verifyCookies,
-  verifyUserAccountStatus,
-  async (req: Request, res: Response) => {
-    const id = req.params.id;
-    const user = await repository.findByIdAndType(id, 'teacher');
+  res.render('editTeachertForm', { user });
 
-    if (user === undefined) {
-      return res.status(404).json({
-        message: 'The requested resource was not found',
-        status: 404,
-        type: 'not_found',
-      });
-    }
-
-    res.render('editTeachertForm', { user });
-  }
-);
+});
 
 router.post('/', async (req: Request, res: Response) => {
+
   await signUp(req.body.email, req.body.password, 'teacher', req.body);
   res.redirect('/teachers');
+
 });
 
 router.post('/delete', async (req: Request, res: Response) => {
-  const id = <string> req.query.id;
+
+  const id = <string>req.query.id;
   await repository.deleteById(id);
   await deleteAccountById(id);
   res.redirect('/teachers');
+
 });
 
-router.get(
-  '/:id',
-  verifyCookies,
-  verifyUserAccountStatus,
-  async (req: Request, res: Response) => {
-    const id = req.params.id;
-    const user = await repository.findById(id);
+router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {
 
-    if (user === undefined) {
-      return res.status(404).json({
-        message: 'The requested resource was not found',
-        status: 404,
-        type: 'not_found',
-      });
-    }
+  const id = req.params.id;
+  const user = await repository.findById(id);
 
-    // if (user.type === 'student') {
-    //   return res.redirect(`/students/${user.id}`);
-    // }
+  if (user === undefined) {
 
-    return res.status(200).json(user);
+    return res.status(404).json({ message: 'The requested resource was not found', status: 404, type: 'not_found' });
+
   }
-);
+  return res.status(200).json(user);
 
-router.get(
-  '/',
-  verifyCookies,
-  verifyUserAccountStatus,
-  async (req: Request, res: Response) => {
-    const user = req.cookies['auth']['user'];
-    let teachers = await repository.fetchAllByType('teacher');
+});
 
-    teachers = teachers.map(teacher => {
-      return {
-        ...teacher,
-        deletePath: `/teachers/delete?id=${teacher.id}`,
-        editPath: `/students/${teacher.id}`,
-      };
-    });
+router.get('/', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {
 
-    res.render('teachers', {
-      user,
-      teachers,
-    });
-  }
-);
+  const user = req.cookies['auth']['user'];
+  let teachers = await repository.fetchAllByType('teacher');
+
+  teachers = teachers.map(teacher => {
+
+    return {
+
+      ...teacher,
+      deletePath: `/teachers/delete?id=${teacher.id
+        }`,
+      editPath: `/teachers/${teacher.id
+        }`
+
+    };
+
+  });
+
+  res.render('teachers', { user, teachers });
+
+});
 
 export default router;

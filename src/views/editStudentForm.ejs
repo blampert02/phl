@@ -33,31 +33,31 @@
                 <form class="row g-3" action="/students/<%= user.id %>" method="post">
                     <div class="col-md-6">
                         <label for="inputName" class="form-label">Name</label>
-                        <input type="text" class="form-control" name="firstName" placeholder="Name" id="inputName" value="<%= user.firstName %>"/>
+                        <input type="text" class="form-control" name="firstName" placeholder="Name" id="inputName" value="<%= user.firstName %>" required="true"/>
                     </div>
                     <div class="col-md-6">
                         <label for="inputLastName" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" name="lastName" placeholder="Last name" id="inputLastName" value="<%= user.lastName %>"/>
+                        <input type="text" class="form-control" name="lastName" placeholder="Last name" id="inputLastName" value="<%= user.lastName %>" required="true"/>
                     </div>
                     <div class="col-md-6">
                         <label for="inputPhone" class="form-label">Phone number</label>
-                        <input type="number" class="form-control" name="phoneNumber" placeholder="8765-4321" id="inputPhone" minlength="8" value="<%= user.phoneNumber%>"/>
+                        <input type="number" class="form-control" name="phoneNumber" placeholder="8765-4321" id="inputPhone" minlength="8" value="<%= user.phoneNumber%>" required="true"/>
                     </div>
                     <div class="col-md-6">
                         <label for="inputAge" class="form-label">Birthdate</label>
-                        <input type="date" class="form-control" name="birthDate" id="inputAge" value="<%= user.birthDate %>"/>
+                        <input type="date" class="form-control" name="birthDate" id="inputAge" value="<%= user.birthDate %>" required="true"/>
                     </div>
                     <div class="col-md-6">
                         <label for="inputEmail4" class="form-label">Email</label>
-                        <input type="email" class="form-control" name="email" placeholder="pottershouse@email.com" id="inputEmail4" value="<%= user.email %>"/>
+                        <input type="email" class="form-control" name="email" placeholder="pottershouse@email.com" id="inputEmail4" value="<%= user.email %>" required="true"/>
                     </div>
                     <div class="col-md-6">
                         <label for="inputPassword4" class="form-label">Password</label>
-                        <input type="password" class="form-control" name="password" placeholder="Password" id="inputPassword4" minlength="6" value="<%= user.password %>"/>
+                        <input type="password" class="form-control" name="password" placeholder="Password" id="inputPassword4" minlength="6" value="<%= user.password %>" required="true"/>
                     </div>
                     <div class="col-12">
                         <label for="inputAddress" class="form-label">Address</label>
-                        <input type="text" class="form-control" name="address" id="inputAddress" placeholder="1234 Main St" value="<%= user.address %>"/>
+                        <input type="text" class="form-control" name="address" id="inputAddress" placeholder="1234 Main St" value="<%= user.address %>" required="true"/>
                     </div>
                     <div class="col-12">
                         <label for="inputAddress2" class="form-label">Address 2</label>
@@ -65,29 +65,27 @@
                     </div>
                     <div class="col-md-6">
                         <label for="inputCity" class="form-label">City</label>
-                        <input type="text" class="form-control" name="city" id="inputCity" value="<%= user.city %>"/>
+                        <input type="text" class="form-control" name="city" id="inputCity" value="<%= user.city %>" required="true"/>
                     </div>
                     <div class="col-md-4">
-                        <label for="inputState" class="form-label">State</label>
-                        <select id="inputState" name="level" class="form-select">
-                            <option selected>Level</option>
+                        <label for="inputState" class="form-label">Level</label>
+                        <select id="inputState" name="level" class="form-select" required>
+                            <option value="">None</option>
                             <option>1</option>
                             <option>2</option>
-                            <option>...</option>
                         </select>
                     </div>
                     <div class="col-md-4">
                         <label for="inputState" class="form-label">License</label>
-                        <select id="inputState" name="isActive" class="form-select">
-                            <option selected>Options</option>
+                        <select id="inputState" name="isActive" class="form-select" required>
+                            <option value="">Options</option>
                             <option>true</option>
                             <option>false</option>
-                            <option>...</option>
                         </select>
                     </div>
                     <div class="col-md-6">
                         <label for="inputLastName" class="form-label">Username</label>
-                        <input type="text" class="form-control" name="username" placeholder="usernameLastName123" id="inputLastName" value="<%= user.username %>"/>
+                        <input type="text" class="form-control" name="username" placeholder="usernameLastName123" id="inputLastName" value="<%= user.username %>" required="true"/>
                     </div>
                     <div class="col-12">
                         <button id="submit-button" class="btn btn-primary w-100" type="submit">
