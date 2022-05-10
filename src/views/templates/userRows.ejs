@@ -21,9 +21,35 @@
             </form>
         </td>
         <td>
-            <form action="<%= user.deletePath %>" method="post">
-                <button type="submit" class="btn btn-outline-danger">Remove</button>
-            </form>
+             <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<%= user.id %>"
+                class="badge bg-secondary-outline rounded-pill">Remove</button>
         </td>
     </tr>
 </tbody>
+
+<!--DeleteModal-->
+<div class="modal fade" id="deleteModal<%= user.id %>" tabindex="-1" aria-labelledby="deleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Warning</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span style="margin-bottom: 100px;">
+                    Do you really want to delete
+                    <%= user.firstName + " " + user.lastName%> from the list?
+                </span>
+                <p></p>
+                <form action="<%= user.deletePath %>" role="form" method="POST">
+                    <input class="form-control input-lg" name="filename" style="display: none;"
+                        value="<%= user.firstName %>">
+                    <input class="form-control input-lg" name="id" style="display: none;" value="<%= user.id %>">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
