@@ -153,6 +153,14 @@ export class DirectoryRepository {
 		return document !== null ? document.rawName : undefined;
 	}
 
+	async existsByNameAndPath(name: string, path: string): Promise<boolean | undefined> {
+		const document = await FileSchema.findOne({
+			$and: [{ path: { $eq: path } }, { rawName: { $eq: name } }],
+		});
+
+		return document === null ? undefined : true;
+	}
+
 	async delete(id: string): Promise<void> {
 		const document = await FileSchema.findOne({ _id: id });
 
