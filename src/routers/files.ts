@@ -137,6 +137,8 @@ router.post('/delete', async (req: Request, res: Response) => {
 
 	await repository.delete(req.body.id);
 
+	eventEmitter.emit('file-uploaded');
+
 	return res.redirect(`files${req.body.path}`);
 });
 
