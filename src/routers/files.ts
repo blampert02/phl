@@ -44,7 +44,7 @@ router.get('/*', verifyCookies, verifyUserAccountStatus, async (req: Request, re
 			path: req.path,
 		});
 	}
-	
+
 	const directory = await repository.findDirectoryByPath(req.path);
 
 	// Go the the root direction if the requested was not found
@@ -81,8 +81,15 @@ router.post('/upload', upload.single('file_data'), async (req: Request, res: Res
 		return res.redirect('/files');
 	}
 
+	// Create the file only if exists in the given path, otherwise redirect to files page
+	const fileExists = await repository.existsByNameAndPath(req.file.originalname, req.body.path);
+
+	if (fileExists) {
+		return res.redirect('/files' + req.body.path);
+	}
+
 	// Upload the file to the firebase storage
-	const uploadResponse = await bucket.upload(req.file.path, {
+	await bucket.upload(req.file.path, {
 		destination: `storage/${req.file.originalname}`,
 	});
 
@@ -132,7 +139,11 @@ router.post('/delete', async (req: Request, res: Response) => {
 		console.log(`Found filename: ${filename}`);
 		const fileRef = bucket.file(`storage/${filename}`);
 
-		await fileRef.delete();
+		const exists = await fileRef.exists();
+
+		if (exists[0]) {
+			fileRef.delete();
+		}
 	}
 
 	await repository.delete(req.body.id);
