@@ -11,7 +11,7 @@ export type User = {
   isActive: boolean;
   level: number;
   birthDate: Date;
-  city: string;
+  city: string; 
   username?: string;
   phoneNumber?: string;
   address2?: string;

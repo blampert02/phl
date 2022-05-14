@@ -1,129 +1,132 @@
 import { firestore } from '../firebase';
-import firebaseAdmin from 'firebase-admin'
+import firebaseAdmin from 'firebase-admin';
 import { User, UserType } from '../models/user';
 
 interface UpdateUserInfo {
-  firstName: string;
-  lastName: string;
-  address: string;
-  phoneNumber?: string;
-  address2?: string;
-  isActive: boolean;
+	firstName: string;
+	lastName: string;
+	address: string;
+	phoneNumber?: string;
+	address2?: string;
+	isActive: boolean;
 }
 
 interface UpdateStudentInfo extends UpdateUserInfo {
-  level: number;
+	level: number;
 }
 
 interface UpdateTeacherInfo extends UpdateUserInfo {
-  inss: string;
+	inss: string;
 }
 
 class UserRepository {
-  constructor(
-    private readonly collection: FirebaseFirestore.CollectionReference<firebaseAdmin.firestore.DocumentData>
-  ) {}
+	constructor(
+		private readonly collection: FirebaseFirestore.CollectionReference<firebaseAdmin.firestore.DocumentData>
+	) {}
 
-  async save(user: User): Promise<void> {
-    try {
-      console.log(user);
-      await this.collection.doc(user.id).set(user);
-    } catch (err) {
-      console.log('failed');
-      console.log(err);
-    }
-  }
+	async save(user: User): Promise<void> {
+		try {
+			console.log(user);
+			await this.collection.doc(user.id).set(user);
+		} catch (err) {
+			console.log('failed');
+			console.log(err);
+		}
+	}
 
-  async deleteById(id: string): Promise<void> {
-    console.log();
-    await this.collection.doc(id).delete();
-  }
+	async bulkInsert(users: User[]): Promise<void> {
+		const insertBatch = firestore().batch();
 
-  async findByEmail(email: string): Promise<User | undefined> {
-    const querySnapshot = await this.collection
-      .where('email', '==', email)
-      .get();
+		users.forEach(user => {
+			const docRef = this.collection.doc(user.id);
+			insertBatch.set(docRef, user);
+		});
 
-    if (querySnapshot.empty) {
-      return undefined;
-    }
+    await insertBatch.commit();
+	}
 
-    const user = this.asUser(querySnapshot.docs[0].data());
+	async deleteById(id: string): Promise<void> {
+		console.log();
+		await this.collection.doc(id).delete();
+	}
 
-    return user;
-  }
+	async findByEmail(email: string): Promise<User | undefined> {
+		const querySnapshot = await this.collection.where('email', '==', email).get();
 
-  async update(id: string, userInfo: UpdateUserInfo) {
-    this.collection.doc(id).update(userInfo);
-  }
+		if (querySnapshot.empty) {
+			return undefined;
+		}
 
-  async findByUsernameAndPassword(
-    username: string,
-    password: string
-  ): Promise<User | undefined> {
-    const querySnapshot = await this.collection
-      .where('username', '==', username)
-      .where('password', '==', password)
-      .get();
+		const user = this.asUser(querySnapshot.docs[0].data());
 
-    if (querySnapshot.empty) {
-      return undefined;
-    }
+		return user;
+	}
 
-    const user = this.asUser(querySnapshot.docs[0].data());
+	async update(id: string, userInfo: UpdateUserInfo) {
+		this.collection.doc(id).update(userInfo);
+	}
 
-    return user;
-  }
+	async findByUsernameAndPassword(username: string, password: string): Promise<User | undefined> {
+		const querySnapshot = await this.collection
+			.where('username', '==', username)
+			.where('password', '==', password)
+			.get();
 
-  async findById(id: string): Promise<User | undefined> {
-    const querySnapshot = await this.collection.doc(id).get();
+		if (querySnapshot.empty) {
+			return undefined;
+		}
 
-    const data = querySnapshot.data();
+		const user = this.asUser(querySnapshot.docs[0].data());
 
-    return data !== undefined ? this.asUser(data) : undefined;
-  }
+		return user;
+	}
 
-  async findByIdAndType(id: string, type: UserType): Promise<User | undefined> {
-    const querySnapshot = await this.collection
-      .where('id', '==', id)
-      .where('type', '==', type)
-      .get();
+	async findById(id: string): Promise<User | undefined> {
+		const querySnapshot = await this.collection.doc(id).get();
 
-    if (querySnapshot.empty) {
-      return undefined;
-    }
+		const data = querySnapshot.data();
 
-    const user = this.asUser(querySnapshot.docs[0].data());
+		return data !== undefined ? this.asUser(data) : undefined;
+	}
 
-    return user;
-  }
+	async findByIdAndType(id: string, type: UserType): Promise<User | undefined> {
+		const querySnapshot = await this.collection.where('id', '==', id).where('type', '==', type).get();
 
-  async fetchAllByType(type: UserType): Promise<User[]> {
-    const querySnapshot = await this.collection.where('type', '==', type).get();
-    const docs = querySnapshot.docs.map(doc => doc.data());
-    const users = docs.map(this.asUser);
-    return users;
-  }
+		if (querySnapshot.empty) {
+			return undefined;
+		}
 
-  private asUser(doc: any): User {
-    return {
-      id: doc.id,
-      type: doc.type,
-      username: doc.username,
-      email: doc.email,
-      password: doc.password,
-      firstName: doc.firstName,
-      lastName: doc.lastName,
-      isActive: doc.isActive,
-      birthDate: doc.birthDate,
-      phoneNumber: doc.phoneNumber,
-      address: doc.address,
-      address2: doc.address2,
-      city: doc.city,
-      level: doc.level,
-      inss: doc.inss,
-    };
-  }
+		const user = this.asUser(querySnapshot.docs[0].data());
+
+		return user;
+	}
+
+	async fetchAllByType(type: UserType): Promise<User[]> {
+		const querySnapshot = await this.collection.where('type', '==', type).get();
+		const docs = querySnapshot.docs.map(doc => doc.data());
+		const users = docs.map(this.asUser);
+		return users;
+	}
+
+	private asUser(doc: any): User {
+		return {
+			id: doc.id,
+			type: doc.type,
+			username: doc.username,
+			email: doc.email,
+			password: doc.password,
+			firstName: doc.firstName,
+			lastName: doc.lastName,
+			isActive: doc.isActive,
+			birthDate: doc.birthDate,
+			phoneNumber: doc.phoneNumber,
+			address: doc.address,
+			address2: doc.address2,
+			city: doc.city,
+			level: doc.level,
+			inss: doc.inss,
+		};
+	}
 }
 
 const instance = new UserRepository(firestore().collection('users'));

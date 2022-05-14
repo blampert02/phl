@@ -1,6 +1,5 @@
 import './firebase';
 import mongoose from 'mongoose';
-import cron from 'node-cron';
 import express, { Application, Request, Response } from 'express';
 import morgan from 'morgan';
 import dotenv from 'dotenv-safe';
@@ -15,6 +14,7 @@ import repository from './repositories/user';
 import { AddressInfo } from 'net';
 import { synchronize } from './data-sync';
 import fileRepository from './repositories/file';
+import cors from 'cors';
 
 const app = express();
 
@@ -25,6 +25,7 @@ app.use(express.static(__dirname + '/public'));
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(cookieParser());
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use('/students', studentRouter);
 app.use('/teachers', teacherRouter);

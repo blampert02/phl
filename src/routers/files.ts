@@ -87,7 +87,7 @@ router.post('/upload', upload.single('file_data'), async (req: Request, res: Res
 	if (fileExists) {
 		return res.redirect('/files' + req.body.path);
 	}
-
+	
 	// Upload the file to the firebase storage
 	await bucket.upload(req.file.path, {
 		destination: `storage/${req.file.originalname}`,
