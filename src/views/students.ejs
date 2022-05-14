@@ -46,73 +46,67 @@
                     </ul>
                 </table>
                 <!--Choose file button-->
+                <label for="formFile" class="form-label">Import a student file</label>
                 <form action="/students/excel" method="post" enctype="multipart/form-data" class="input-group">
-                    <div class="mb-3">
-                        <input name="file_data" class="form-control" type="file" id="formFile" accept=".xls,.xlsx">
-                        <label for="formFile" class="form-label">Import a file</label>
-                        <input type="submit" class="btn btn-outline-secondary" id="inputGroupFileAddon04">
-                    </div>
+                    <input name="file_data" class="form-control" type="file" id="formFile" accept=".xls,.xlsx">
+                    <input type="submit" class="btn btn-outline-secondary" id="inputGroupFileAddon04">
                 </form>
+
                 <div class="d-grid gap-2">
                     <div class="col text-center">
-                        <button id="AddTeachersButton" class="btn btn-primary w-50" class="btn btn-primary"
-                            type="button">Add a new teacher</button>
+                        <button id="AddStudentButton" class="btn btn-primary w-50" class="btn btn-primary"
+                            type="button">Add a new student</button>
                     </div>
                 </div>
             </div>
-            <script type="text/javascript">
-                document.getElementById("AddStudentButton").onclick = function () {
-                    location.href = "/students/add";
-                };
-            </script>
-            </div>
+            <%- include("./templates/footer") %>
+        </main>
 </body>
+
+<script type="text/javascript">
+    document.getElementById("AddStudentButton").onclick = function () {
+        location.href = "/students/add";
+    };
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
 <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
 <script type="module">
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
 
-    const pusher = new Pusher('598286a2c69ac238f324', {
-        cluster: 'us2'
-    });
+    const pusher = new Pusher('598286a2c69ac238f324', { cluster: 'us2' });
 
     const channel = pusher.subscribe('default');
 
     channel.bind('importing', function (data) {
+
         switch (data.status) {
+
             case 'loading':
 
                 break;
             case 'done':
+                Swal.fire(
+                    'Good job!',
+                    'The file is uploaded, please reload the site',
+                    'success'
+                )
                 break;
             case 'error':
-                Swal.fire({
-                    title: 'Something went wrong',
-                    text: data.message,
-                    icon: 'error',
-                    confirmButtonText: 'Ok'
-                })
+                Swal.fire({ title: 'Something went wrong', text: data.message, icon: 'error', confirmButtonText: 'Ok' })
                 break;
         }
     });
-
 </script>
-<script src="assets/js/index.js"></script>
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+<script src="assets/vendor/php-email-form/validate.js"></script>
+<script src="assets/vendor/quill/quill.min.js"></script>
+<script src="assets/vendor/tinymce/tinymce.min.js"></script>
+<script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="assets/vendor/chart.js/chart.min.js"></script>
+<script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="assets/vendor/echarts/echarts.min.js"></script>
+<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 
 </html>
-</div>
-<%- include("./templates/footer") %>
-    </main>
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
-    <script src="assets/vendor/php-email-form/validate.js"></script>
-    <script src="assets/vendor/quill/quill.min.js"></script>
-    <script src="assets/vendor/tinymce/tinymce.min.js"></script>
-    <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
-    <script src="assets/vendor/chart.js/chart.min.js"></script>
-    <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
-    <script src="assets/vendor/echarts/echarts.min.js"></script>
-    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-    </body>
-
-    </html>

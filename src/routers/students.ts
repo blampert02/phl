@@ -6,7 +6,7 @@ import { signUp, deleteAccountById, signUpV2 } from '../auth';
 import { createUser } from '../models/user';
 import multer from 'multer';
 import EventEmitter from 'events';
-import { readExcelFile } from '../excel';
+import { readExcelFile } from '../excelStudents';
 import { notify } from '../pusher';
 
 const storage = multer.memoryStorage();
@@ -15,6 +15,7 @@ const router = express.Router();
 
 const eventEmitter = new EventEmitter();
 
+//Importing excel file process
 eventEmitter.on('import', async (buffer: Buffer) => {
 	try {
 		await notify('importing', { status: 'loading' });

@@ -1,21 +1,21 @@
 export type UserType = 'teacher' | 'student';
 
 export type User = {
-  id: string;
-  email: string;
-  type: UserType;
-  firstName: string;
-  lastName: string;
-  address: string;
-  password: string;
-  isActive: boolean;
-  level: number;
-  birthDate: Date;
-  city: string; 
-  username?: string;
-  phoneNumber?: string;
-  address2?: string;
-  inss?: string;
+  id: string;//All
+  email: string;//All
+  type: UserType;//All
+  firstName: string;//All
+  lastName: string;//All
+  address: string;//All
+  password: string;//All
+  isActive: boolean;//All
+  username: string; //All
+  phoneNumber: string;//All
+  city?: string; //Students
+  birthDate?: Date; //Students
+  level?: number; //Students
+  address2?: string;//All
+  inss?: string; //Teachers
 };
 
 export function createUser(id: string, type: UserType, info: any): User {

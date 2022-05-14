@@ -35,6 +35,7 @@ export async function synchronize() {
       rawName: doc.rawName,
       parentId: doc.parentId,
       createdAt: doc.createdAt
+    
     }
     
     insertBatch.set(docRef, data)

@@ -1,10 +1,79 @@
+import { User } from './../models/user';
 import express, { Request, Response } from 'express';
 import verifyCookies, { verifyUserAccountStatus } from '../middlewares/verifyCookies';
 import { createUser } from '../models/user';
 import repository from '../repositories/user';
-import { signUp, deleteAccountById } from '../auth';
+import { signUp, deleteAccountById, signUpV2 } from '../auth';
+import EventEmitter from 'events';
+import { readExcelFile } from '../excelTeachers';
+import { notify } from '../pusher';
+import multer from 'multer';
+
+
 
 const router = express.Router();
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+const eventEmitter = new EventEmitter();
+
+//Importing excel file process
+
+eventEmitter.on('import', async (buffer: Buffer) => {
+	try {
+		await notify('importing', { status: 'loading' });
+		const teachers = await readExcelFile(buffer, 'teacher');
+
+		const teachersWithSameEmail = teachers.filter(teacher => {
+			const sameEmail = teachers.filter(teacher2 => teacher2.email === teacher.email);
+			return sameEmail.length > 1;
+		});
+
+		if (teachersWithSameEmail.length > 0) {
+			eventEmitter.emit('error', 'There are teachers with same email');
+			return;
+		}
+
+		eventEmitter.emit('authenticate-teachers', teachers);
+	} catch (e: any) {
+		eventEmitter.emit('error', e.message);
+	}
+});
+
+eventEmitter.on('authenticate-teachers', async (teachers: User[]) => {
+	let emitValue = true;
+	teachers.forEach(async teacher => {
+		try {
+			const authRecord = await signUpV2(teacher.email, teacher.password, 'teacher', teacher);
+			teacher.id = authRecord.uid;
+			await repository.save(teacher);
+		} catch (e: any) {
+			if (emitValue) {
+				eventEmitter.emit('error', e.message);
+			}
+			emitValue = false;
+		}
+	});
+	await notify('importing', { status: 'done' });
+});
+
+eventEmitter.on('error', async (message: string) => {
+	await notify('importing', { status: 'error', message });
+	console.log('An error has occurred:', message);
+});
+
+router.post('/excel', upload.single('file_data'), async (req: Request, res: Response) => {
+	if (!req.file) return res.redirect('/teachers');
+
+	const fileExtension = req.file.originalname.split('.').pop();
+
+	if (fileExtension !== 'xlsx' && fileExtension !== 'xls') {
+		return res.redirect('/teachers');
+	}
+
+	eventEmitter.emit('import', req.file.buffer);
+
+	return res.redirect('/teachers');
+});
 
 router.get('/add', verifyCookies, verifyUserAccountStatus, (req: Request, res: Response) => {
 

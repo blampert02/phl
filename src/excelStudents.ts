@@ -20,10 +20,10 @@ type ColumnType =
 	| 'Birthdate'
 	| 'License'
 	| 'Level'
-	| 'Inss';
 
 export async function readExcelFile(buffer: Buffer, type: UserType): Promise<User[]> {
 	const workbook = new Excel.Workbook();
+	//For testing purposes 
 	//const filepath = path.join(__dirname, 'Libro3.xlsx');
 	//await workbook.xlsx.readFile(filepath);
 
