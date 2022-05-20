@@ -1,33 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="utf-8">
-        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-        <title>Potter's House Academy</title>
-        <meta content="" name="description">
-        <meta content="" name="keywords">
-        <base href="/"/>
+    <title>Potter's House Academy</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <base href="/" />
 
-        <link href="assets/img/favicon.png" rel="icon">
-        <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="assets/img/favicon.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
-        <link href="https://fonts.gstatic.com" rel="preconnect">
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
 
-        <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-        <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-        <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-        <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
-        <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
-        <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
-        <link href="assets/css/style.css" rel="stylesheet">
-    </head>
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+</head>
 
-    <body>
-        <%- include("./templates/navbar") %>
+<body>
+    <%- include("./templates/navbar") %>
         <main id="main" class="main">
             <div class="container">
                 <div class="row g-5">
@@ -35,22 +37,26 @@
                         <center>
                             <h3 style="font-style:italic;">Potter's House Document</h3>
                         </center>
-                        <button data-bs-toggle="modal" data-bs-target="#CreateFolderNodal" class="btn btn-outline-secondary" style="margin: 5px; ">
+                        <button data-bs-toggle="modal" data-bs-target="#CreateFolderNodal"
+                            class="btn btn-outline-secondary" style="margin: 5px; ">
                             <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 16 16" width="16" height="16">
-                                <path fill-rule="evenodd" d="M13.25 2.5H2.75a.25.25 0 00-.25.25v10.5c0 .138.112.25.25.25h10.5a.25.25 0 00.25-.25V2.75a.25.25 0 00-.25-.25zM2.75 1h10.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0113.25 15H2.75A1.75 1.75 0 011 13.25V2.75C1 1.784 1.784 1 2.75 1zM8 4a.75.75 0 01.75.75v2.5h2.5a.75.75 0 010 1.5h-2.5v2.5a.75.75 0 01-1.5 0v-2.5h-2.5a.75.75 0 010-1.5h2.5v-2.5A.75.75 0 018 4z"></path>
+                                <path fill-rule="evenodd"
+                                    d="M13.25 2.5H2.75a.25.25 0 00-.25.25v10.5c0 .138.112.25.25.25h10.5a.25.25 0 00.25-.25V2.75a.25.25 0 00-.25-.25zM2.75 1h10.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0113.25 15H2.75A1.75 1.75 0 011 13.25V2.75C1 1.784 1.784 1 2.75 1zM8 4a.75.75 0 01.75.75v2.5h2.5a.75.75 0 010 1.5h-2.5v2.5a.75.75 0 01-1.5 0v-2.5h-2.5a.75.75 0 010-1.5h2.5v-2.5A.75.75 0 018 4z">
+                                </path>
                             </svg>
                             Create Folder
                         </button>
                         <button onclick="history.back()" class="btn btn-outline-secondary" style="margin: 5px; ">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-arrow-left-square" viewbox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm11.5 5.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                class="bi bi-arrow-left-square" viewbox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm11.5 5.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
                             </svg>
                             Go back
                         </button>
                     </div>
 
-                    <div
-                        class="limit">
+                    <div class="limit">
 
                         <!--Dropbox interface-->
 
@@ -64,58 +70,81 @@
                             <ul>
                                 <% directory.content.forEach(function(item) { %>
                                     <%- include('./templates/file-item-row', {item}); %>
-                                <% }); %>
+                                        <% }); %>
                             </ul>
                         </table>
 
 
-                        <div
-                            style="margin-top: 20px;">
+                        <div style="margin-top: 20px;">
                             <!--Choose file button-->
-                            <form action="/files/upload" method="post" enctype="multipart/form-data" class="input-group">
-                                <input name="file_data" type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
-                                <input class="form-control input-lg" name="parentDirectoryId" style="display: none;" value="<%= directoryId %>">
+                            <form action="/files/upload" method="post" enctype="multipart/form-data"
+                                class="input-group">
+                                <input name="file_data" type="file" class="form-control" id="inputGroupFile04"
+                                    aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                                <input class="form-control input-lg" name="parentDirectoryId" style="display: none;"
+                                    value="<%= directoryId %>">
                                 <input type="submit" class="btn btn-outline-secondary" id="inputGroupFileAddon04">
                                 <input class="form-control input-lg" name="type" style="display: none;" value="file">
-                                <input class="form-control input-lg" name="path" style="display: none;" value="<%= path %>">
+                                <input class="form-control input-lg" name="path" style="display: none;"
+                                    value="<%= path %>">
                             </form>
                         </div>
                     </div>
-                </article>
+                    </article>
+                </div>
             </div>
-        </div>
 
-        <!--Modal-->
-        <div class="modal fade" id="CreateFolderNodal" tabindex="-1" aria-labelledby="CreateFolderNodalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="CreateFolderNodalLabel">Create folder</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
+            <!--Modal-->
+            <div class="modal fade" id="CreateFolderNodal" tabindex="-1" aria-labelledby="CreateFolderNodalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="CreateFolderNodalLabel">Create folder</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
 
-                    <div class="modal-body">
-                        <form role="form" method="POST" action="/files/upload">
-                            <input type="hidden" name="_token" value="">
-                            <div class="form-group">
-                                <label class="control-label">Name</label>
-                                <p></p>
-                                <div>
-                                    <input type="text" class="form-control input-lg" name="name" placeholder="Folder name">
-                                    <input class="form-control input-lg" name="path" style="display: none;" value="<%= path %>">
-                                    <input class="form-control input-lg" name="parentDirectoryId" style="display: none;" value="<%= directoryId %>">
-                                    <input class="form-control input-lg" name="type" style="display: none;" value="directory">
-                                    <button style="margin-top: 16px;" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button style="margin-top: 16px;" type="submit" class="btn btn-primary">Create</button>
+                        <div class="modal-body">
+                            <form role="form" method="POST" action="/files/upload">
+                                <input type="hidden" name="_token" value="">
+                                <div class="form-group">
+                                    <label class="control-label">Name</label>
+                                    <p></p>
+                                    <div>
+                                        <input type="text" class="form-control input-lg" name="name"
+                                            placeholder="Folder name">
+                                        <input class="form-control input-lg" name="path" style="display: none;"
+                                            value="<%= path %>">
+                                        <input class="form-control input-lg" name="parentDirectoryId"
+                                            style="display: none;" value="<%= directoryId %>">
+                                        <input class="form-control input-lg" name="type" style="display: none;"
+                                            value="directory">
+                                        <button style="margin-top: 16px;" type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cancel</button>
+                                        <button style="margin-top: 16px;" type="submit"
+                                            class="btn btn-primary">Create</button>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
 
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <%- include("./templates/footer") %>
-    </body>
+            <%- include("./templates/footer") %>
+</body>
 
-</html></main><script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script><script src="assets/vendor/php-email-form/validate.js"></script><script src="assets/vendor/quill/quill.min.js"></script><script src="assets/vendor/tinymce/tinymce.min.js"></script><script src="assets/vendor/simple-datatables/simple-datatables.js"></script><script src="assets/vendor/chart.js/chart.min.js"></script><script src="assets/vendor/apexcharts/apexcharts.min.js"></script><script src="assets/vendor/echarts/echarts.min.js"></script><script src="assets/js/main.js"></script></body></html>
+</html>
+</main>
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+<script src="assets/vendor/php-email-form/validate.js"></script>
+<script src="assets/vendor/quill/quill.min.js"></script>
+<script src="assets/vendor/tinymce/tinymce.min.js"></script>
+<script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="assets/vendor/chart.js/chart.min.js"></script>
+<script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="assets/vendor/echarts/echarts.min.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+
+</html>

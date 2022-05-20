@@ -29,6 +29,10 @@
     <%- include("./templates/navbar") %>
         <main id="main" class="main">
             <div class="container">
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                </form>
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -84,7 +88,6 @@
         switch (data.status) {
 
             case 'loading':
-
                 break;
             case 'done':
                 Swal.fire(
@@ -99,6 +102,7 @@
         }
     });
 </script>
+<script src="assets/js/main.js"></script>
 <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
 <script src="assets/vendor/php-email-form/validate.js"></script>
 <script src="assets/vendor/quill/quill.min.js"></script>

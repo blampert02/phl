@@ -1,7 +1,7 @@
 <tbody>
     <tr>
-        <td>
-            <a href="<%= item.downloadUrl !== undefined ? item.downloadUrl : `files${item.path}${item.name}` %>"
+        <td>    
+            <a  target="<%= item.downloadUrl !== undefined ? item.downloadUrl : ""%>" href="<%= item.downloadUrl !== undefined ? item.downloadUrl : `files${item.path}${item.name}` %>"
                 class="btn btn-light">
                 <% if (item.downloadUrl === undefined ) { %>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"

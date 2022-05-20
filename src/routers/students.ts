@@ -103,9 +103,18 @@ router.post('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request,
 	return res.redirect('/students');
 });
 
+//
 router.get('/add', verifyCookies, verifyUserAccountStatus, (req: Request, res: Response) => {
 	const user = req.cookies['auth']['user'];
-	res.render('addStudentForm', { user });
+
+	const date = new Date();
+	const year = date.getFullYear();
+	const month = date.getMonth() + 1;
+	const day = date.getDate();
+	const lastDate =  (year-8) + "-" + month + "-" + day ;
+	
+
+	res.render('addStudentForm', { user, lastDate });
 });
 
 router.get('/edit', verifyCookies, verifyUserAccountStatus, (req: Request, res: Response) => {
