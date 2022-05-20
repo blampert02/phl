@@ -46,7 +46,7 @@
                     </div>
                     <div class="col-md-6">
                         <label for="inputAge" class="form-label">Birthdate</label>
-                        <input type="date" class="form-control" name="birthDate" id="inputAge" max="2014-05-14" required="true"/>
+                        <input type="date" class="form-control" name="birthDate" id="inputAge" min='<%= minDate %>' max='<%= lastDate %>' required="true"/>
                     </div>
                     <div class="col-md-6">
                         <label for="inputEmail4" class="form-label">Email</label>

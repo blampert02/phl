@@ -8,6 +8,8 @@ import multer from 'multer';
 import EventEmitter from 'events';
 import { readExcelFile } from '../excelStudents';
 import { notify } from '../pusher';
+import e from 'express';
+import { parse } from 'path';
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -106,20 +108,40 @@ router.post('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request,
 //
 router.get('/add', verifyCookies, verifyUserAccountStatus, (req: Request, res: Response) => {
 	const user = req.cookies['auth']['user'];
+	
+	const date = new Date();
+	const year = date.getFullYear();
+	const month = date.getMonth() + 1;
+	const day = date.getDate();
+	let newMonth;
+	(month < 10)?  newMonth = '0' + month : newMonth = month;
+
+	//MaxDate
+	const lastDate =  (year-8) + "-" + newMonth + "-" + day;
+
+	//MinDate
+	const minDate =  (year-100) + "-" + newMonth + "-" + day;
+	
+	res.render('addStudentForm', { user, lastDate, minDate });
+});
+
+router.get('/edit', verifyCookies, verifyUserAccountStatus, (req: Request, res: Response) => {
+	const user = req.cookies['auth']['user'];
 
 	const date = new Date();
 	const year = date.getFullYear();
 	const month = date.getMonth() + 1;
 	const day = date.getDate();
-	const lastDate =  (year-8) + "-" + month + "-" + day ;
-	
+	let newMonth;
+	(month < 10)?  newMonth = '0' + month : newMonth = month;
 
-	res.render('addStudentForm', { user, lastDate });
-});
+	//MaxDate
+	const lastDate =  (year-8) + "-" + newMonth + "-" + day;
 
-router.get('/edit', verifyCookies, verifyUserAccountStatus, (req: Request, res: Response) => {
-	const user = req.cookies['auth']['user'];
-	res.render('editStudentForm', { user });
+	//MinDate
+	const minDate =  (year-100) + "-" + newMonth + "-" + day;
+
+	res.render('editStudentForm', { user, lastDate, minDate });
 });
 
 router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {
@@ -130,7 +152,45 @@ router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, 
 		return res.status(404).json({ message: 'The requested resource was not found', status: 404, type: 'not_found' });
 	}
 
-	res.render('editStudentForm', { user });
+	const date = new Date();
+	const year = date.getFullYear();
+	const month = date.getMonth() + 1;
+	const day = date.getDate();
+	let newMonth;
+	(month < 10)?  newMonth = '0' + month : newMonth = month;
+
+	//MaxDate
+	const lastDate =  (year-8) + "-" + newMonth + "-" + day;
+
+	//MinDate
+	const minDate =  (year-100) + "-" + newMonth + "-" + day;
+
+	res.render('editStudentForm', { user, lastDate, minDate });
+});
+
+router.get('/:filter', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {
+	const user = req.cookies['auth']['user'];
+	// const email = req.params.email;
+	// const level = req.params.level;
+	// const firstName = req.params.firstName;
+	// const lastName = req.params.lastName;
+	let filter = req.params.filter;
+	let searchedStudents;
+
+	let students = await repository.fetchAllByType('student');
+	// let emails = await repository.findByEmail(email);
+	// let levels = await repository.findByLevel(parseInt(level));
+	// let names = await repository.findByName(firstName, lastName);
+	
+	if(students){
+		searchedStudents = students.filter(student => {
+			filter = filter.toLocaleLowerCase().toString();
+			return student.firstName.toLocaleLowerCase().includes('Jefdale2') || student.lastName.toLocaleLowerCase().includes(filter)
+			|| student.email.toLocaleLowerCase().includes(filter);
+		});
+	}
+
+	res.render('students', { user, students, searchedStudents });
 });
 
 router.post('/', async (req: Request, res: Response) => {

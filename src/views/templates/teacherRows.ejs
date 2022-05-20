@@ -20,12 +20,11 @@
         </td>
         <td>
             <form action="<%= teacher.editPath %>" method="get">
-                <button id="EditTeachersButton" type="submit" class="btn btn-outline-primary">Edit</button>
+                <button id="EditTeachersButton" type="submit" class="btn btn-outline-primary rounded-pill">Edit</button>
             </form>
         </td>
         <td>
-            <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<%= teacher.id %>"
-                class="badge bg-secondary-outline rounded-pill">Remove</button>
+            <button class="btn btn-outline-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#deleteModal<%= teacher.id %>">Remove</button>
         </td>
     </tr>
 </tbody>

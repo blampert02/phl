@@ -50,18 +50,6 @@ class UserRepository {
 		await this.collection.doc(id).delete();
 	}
 
-	async findByEmail(email: string): Promise<User | undefined> {
-		const querySnapshot = await this.collection.where('email', '==', email).get();
-
-		if (querySnapshot.empty) {
-			return undefined;
-		}
-
-		const user = this.asUser(querySnapshot.docs[0].data());
-
-		return user;
-	}
-
 	async update(id: string, userInfo: UpdateUserInfo) {
 		this.collection.doc(id).update(userInfo);
 	}
@@ -100,13 +88,57 @@ class UserRepository {
 
 		return user;
 	}
-
+	
 	async fetchAllByType(type: UserType): Promise<User[]> {
 		const querySnapshot = await this.collection.where('type', '==', type).get();
 		const docs = querySnapshot.docs.map(doc => doc.data());
 		const users = docs.map(this.asUser);
 		return users;
 	}
+	// Search bar function 
+	// async fetchAllBySearchedValue(name: string, email: string, level: number): Promise<User[]> {
+	// 	const querySnapshot = await this.collection.where('email', '==', email || 'name', '==', name || 'level', '==', level).get();
+	// 	const docs = querySnapshot.docs.map(doc => doc.data());
+	// 	const users = docs.map(this.asUser);
+	// 	return users;
+	// }
+	// Searches needed 
+	async findByEmail(email: string): Promise<User | undefined> {
+		const querySnapshot = await this.collection.where('email', '==', email).get();
+
+		if (querySnapshot.empty) {
+			return undefined;
+		}
+
+		const user = this.asUser(querySnapshot.docs[0].data());
+
+		return user;
+	}
+
+	async findByName(firstName: string, lastName: string): Promise<User | undefined> {
+		const querySnapshot = await this.collection.where('firstName', '==', firstName).where('lastName', '==', lastName).get();
+
+		if (querySnapshot.empty) {
+			return undefined;
+		}
+
+		const user = this.asUser(querySnapshot.docs[0].data());
+
+		return user;
+	}
+
+	async findByLevel(level: number): Promise<User | undefined> {
+		const querySnapshot = await this.collection.where('level', '==', level).get();
+
+		if (querySnapshot.empty) {
+			return undefined;
+		}
+
+		const user = this.asUser(querySnapshot.docs[0].data());
+
+		return user;
+	}
+
 
 	private asUser(doc: any): User {
 		return {

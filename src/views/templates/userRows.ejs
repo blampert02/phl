@@ -10,16 +10,24 @@
             <%= user.level %>
         </td>
         <td>
-            <%= user.score %>
+            <%= user.username %>
+        </td>
+        <td>
+            <%= user.address %>
+        </td>
+        <td>
+            <%= user.email %>
         </td>
         <td>
             <form action="<%= user.editPath %>" method="get">
-                <button id="EditStudentsButton" type="submit" class="btn btn-outline-primary">Edit</button>
+                <button id="EditStudentsButton" type="submit" class="btn btn-outline-primary rounded-pill">Edit</button>
             </form>
         </td>
         <td>
-             <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<%= user.id %>"
-                class="badge bg-secondary-outline rounded-pill">Remove</button>
+            <button class="btn btn-outline-dark rounded-pill" class="badge bg-secondary-outline rounded-pill">Scores</button>
+        </td>
+        <td>
+            <button class="btn btn-outline-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#deleteModal<%= user.id %>">Remove</button>
         </td>
     </tr>
 </tbody>
