@@ -42,7 +42,7 @@ class UserRepository {
 			insertBatch.set(docRef, user);
 		});
 
-    await insertBatch.commit();
+		await insertBatch.commit();
 	}
 
 	async deleteById(id: string): Promise<void> {
@@ -88,21 +88,40 @@ class UserRepository {
 
 		return user;
 	}
-	
+
+	async findByQuery(query: string, type: UserType): Promise<User[]> {
+		const users = await this.fetchAllByType(type);
+		const sanitize = (query: string) => query.toLowerCase().trim();
+
+		const findByEmail = (user: User) => sanitize(user.email).includes(sanitize(query));
+		const findByName = (user: User) => sanitize(user.firstName).includes(sanitize(query));
+		const findByLastName = (user: User) => sanitize(user.lastName).includes(sanitize(query));
+
+		const filteredUsers = users.filter(user => findByEmail(user) || findByName(user) || findByLastName(user));
+
+		console.log(filteredUsers);
+
+		return filteredUsers;
+		// if (students) {
+		// 	searchedStudents = students.filter(student => {
+		// 		filter = filter.toLocaleLowerCase().toString();
+		// 		return (
+		// 			student.firstName.toLocaleLowerCase().includes('Jefdale2') ||
+		// 			student.lastName.toLocaleLowerCase().includes(filter) ||
+		// 			student.email.toLocaleLowerCase().includes(filter)
+		// 		);
+		// 	});
+		// }
+	}
+
 	async fetchAllByType(type: UserType): Promise<User[]> {
 		const querySnapshot = await this.collection.where('type', '==', type).get();
 		const docs = querySnapshot.docs.map(doc => doc.data());
 		const users = docs.map(this.asUser);
 		return users;
 	}
-	// Search bar function 
-	// async fetchAllBySearchedValue(name: string, email: string, level: number): Promise<User[]> {
-	// 	const querySnapshot = await this.collection.where('email', '==', email || 'name', '==', name || 'level', '==', level).get();
-	// 	const docs = querySnapshot.docs.map(doc => doc.data());
-	// 	const users = docs.map(this.asUser);
-	// 	return users;
-	// }
-	// Searches needed 
+
+	// Searches needed
 	async findByEmail(email: string): Promise<User | undefined> {
 		const querySnapshot = await this.collection.where('email', '==', email).get();
 
@@ -116,7 +135,10 @@ class UserRepository {
 	}
 
 	async findByName(firstName: string, lastName: string): Promise<User | undefined> {
-		const querySnapshot = await this.collection.where('firstName', '==', firstName).where('lastName', '==', lastName).get();
+		const querySnapshot = await this.collection
+			.where('firstName', '==', firstName)
+			.where('lastName', '==', lastName)
+			.get();
 
 		if (querySnapshot.empty) {
 			return undefined;
@@ -138,7 +160,6 @@ class UserRepository {
 
 		return user;
 	}
-
 
 	private asUser(doc: any): User {
 		return {

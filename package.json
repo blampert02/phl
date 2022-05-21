@@ -154,7 +154,7 @@
     "watch": "tsc -w",
     "build": "tsc && npm run copy",
     "dev": "nodemon ./src/index.ts",
-    "excel": "nodemon ./src/excel.ts"
+    "excel": "nodemon ./src/services/data-importer.ts"
   },
   "keywords": [],
   "author": "Dylan Grijalva",

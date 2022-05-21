@@ -76,7 +76,14 @@ router.post('/excel', upload.single('file_data'), async (req: Request, res: Resp
 });
 
 router.get('/', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {
+	const query = <string>req.query.search;
 	const user = req.cookies['auth']['user'];
+
+	if (query) {
+		const filteredStudents = await repository.findByQuery(query, 'student');
+		return res.render('students', { user, students: filteredStudents });
+	}
+
 	let students = await repository.fetchAllByType('student');
 
 	students = students.map(student => {
@@ -87,12 +94,11 @@ router.get('/', verifyCookies, verifyUserAccountStatus, async (req: Request, res
 		};
 	});
 
-	res.render('students', { user, students });
+	return res.render('students', { user, students });
 });
 
 router.post('/delete', async (req: Request, res: Response) => {
 	const id = <string>req.query.id;
-	console.log('Given ID: ' + id);
 	await repository.deleteById(id);
 	await deleteAccountById(id);
 	return res.redirect('/students');
@@ -108,20 +114,20 @@ router.post('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request,
 //
 router.get('/add', verifyCookies, verifyUserAccountStatus, (req: Request, res: Response) => {
 	const user = req.cookies['auth']['user'];
-	
+
 	const date = new Date();
 	const year = date.getFullYear();
 	const month = date.getMonth() + 1;
 	const day = date.getDate();
 	let newMonth;
-	(month < 10)?  newMonth = '0' + month : newMonth = month;
+	month < 10 ? (newMonth = '0' + month) : (newMonth = month);
 
 	//MaxDate
-	const lastDate =  (year-8) + "-" + newMonth + "-" + day;
+	const lastDate = year - 8 + '-' + newMonth + '-' + day;
 
 	//MinDate
-	const minDate =  (year-100) + "-" + newMonth + "-" + day;
-	
+	const minDate = year - 100 + '-' + newMonth + '-' + day;
+
 	res.render('addStudentForm', { user, lastDate, minDate });
 });
 
@@ -133,13 +139,13 @@ router.get('/edit', verifyCookies, verifyUserAccountStatus, (req: Request, res: 
 	const month = date.getMonth() + 1;
 	const day = date.getDate();
 	let newMonth;
-	(month < 10)?  newMonth = '0' + month : newMonth = month;
+	month < 10 ? (newMonth = '0' + month) : (newMonth = month);
 
 	//MaxDate
-	const lastDate =  (year-8) + "-" + newMonth + "-" + day;
+	const lastDate = year - 8 + '-' + newMonth + '-' + day;
 
 	//MinDate
-	const minDate =  (year-100) + "-" + newMonth + "-" + day;
+	const minDate = year - 100 + '-' + newMonth + '-' + day;
 
 	res.render('editStudentForm', { user, lastDate, minDate });
 });
@@ -157,41 +163,18 @@ router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, 
 	const month = date.getMonth() + 1;
 	const day = date.getDate();
 	let newMonth;
-	(month < 10)?  newMonth = '0' + month : newMonth = month;
+	month < 10 ? (newMonth = '0' + month) : (newMonth = month);
 
 	//MaxDate
-	const lastDate =  (year-8) + "-" + newMonth + "-" + day;
+	const lastDate = year - 8 + '-' + newMonth + '-' + day;
 
 	//MinDate
-	const minDate =  (year-100) + "-" + newMonth + "-" + day;
+	const minDate = year - 100 + '-' + newMonth + '-' + day;
 
 	res.render('editStudentForm', { user, lastDate, minDate });
 });
 
-router.get('/:filter', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {
-	const user = req.cookies['auth']['user'];
-	// const email = req.params.email;
-	// const level = req.params.level;
-	// const firstName = req.params.firstName;
-	// const lastName = req.params.lastName;
-	let filter = req.params.filter;
-	let searchedStudents;
-
-	let students = await repository.fetchAllByType('student');
-	// let emails = await repository.findByEmail(email);
-	// let levels = await repository.findByLevel(parseInt(level));
-	// let names = await repository.findByName(firstName, lastName);
-	
-	if(students){
-		searchedStudents = students.filter(student => {
-			filter = filter.toLocaleLowerCase().toString();
-			return student.firstName.toLocaleLowerCase().includes('Jefdale2') || student.lastName.toLocaleLowerCase().includes(filter)
-			|| student.email.toLocaleLowerCase().includes(filter);
-		});
-	}
-
-	res.render('students', { user, students, searchedStudents });
-});
+router.get('/:filter', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {});
 
 router.post('/', async (req: Request, res: Response) => {
 	await signUp(req.body.email, req.body.password, 'student', req.body);

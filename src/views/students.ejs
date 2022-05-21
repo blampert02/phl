@@ -30,11 +30,10 @@
         <main id="main" class="main">
             <div class="container">
                 <!--Search bar-->
-                <form class="d-flex">
-                    <input  action="/:filter" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" onkeypress="">
-                    <button methode ="get" action="/:filter" class="btn btn-outline-primary" type="submit">Search</button>
+                <form class="d-flex" action="/students" method="get">
+                    <input name="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
                 </form>
-                <!--Search bar-->
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -88,7 +87,6 @@
     const channel = pusher.subscribe('default');
 
     channel.bind('importing', function (data) {
-
         switch (data.status) {
 
             case 'loading':
