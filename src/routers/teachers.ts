@@ -77,73 +77,78 @@ router.post('/excel', upload.single('file_data'), async (req: Request, res: Resp
 
 router.get('/add', verifyCookies, verifyUserAccountStatus, (req: Request, res: Response) => {
 
-  const user = req.cookies['auth']['user'];
-  res.render('addTeachersForm', { user });
+	const user = req.cookies['auth']['user'];
+	res.render('addTeachersForm', { user });
 
 });
 
 router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {
 
-  const id = req.params.id;
-  const user = await repository.findByIdAndType(id, 'teacher');
+	const id = req.params.id;
+	const user = await repository.findByIdAndType(id, 'teacher');
 
-  if (user === undefined) {
-    return res.status(404).json({ message: 'The requested resource was not found', status: 404, type: 'not_found' });
-  }
-  res.render('editTeacherForm', { user });
+	if (user === undefined) {
+		return res.status(404).json({ message: 'The requested resource was not found', status: 404, type: 'not_found' });
+	}
+	res.render('editTeacherForm', { user });
 });
 
 router.post('/', async (req: Request, res: Response) => {
 
-  await signUp(req.body.email, req.body.password, 'teacher', req.body);
-  res.redirect('/teachers');
+	await signUp(req.body.email, req.body.password, 'teacher', req.body);
+	res.redirect('/teachers');
 
 });
 
 router.post('/delete', async (req: Request, res: Response) => {
 
-  const id = <string>req.query.id;
-  await repository.deleteById(id);
-  await deleteAccountById(id);
-  res.redirect('/teachers');
+	const id = <string>req.query.id;
+	await repository.deleteById(id);
+	await deleteAccountById(id);
+	res.redirect('/teachers');
 
 });
 
 router.post('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {
 
-  const id = req.params.id;
-  const userInfo = createUser(id, 'teacher', req.body);
-  await repository.update(id, userInfo);
-  return res.redirect('/teachers');
+	const id = req.params.id;
+	const userInfo = createUser(id, 'teacher', req.body);
+	await repository.update(id, userInfo);
+	return res.redirect('/teachers');
 });
 
 router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {
 
-  const id = req.params.id;
-  const user = await repository.findById(id);
+	const id = req.params.id;
+	const user = await repository.findById(id);
 
-  if (user === undefined) {
+	if (user === undefined) {
 
-    return res.status(404).json({ message: 'The requested resource was not found', status: 404, type: 'not_found' });
-  }
-  return res.status(200).json(user);
+		return res.status(404).json({ message: 'The requested resource was not found', status: 404, type: 'not_found' });
+	}
+	return res.status(200).json(user);
 });
 
 router.get('/', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {
+	const query = <string>req.query.search;
+	const user = req.cookies['auth']['user'];
+	
+	if (query) {
+		const filteredTeachers = await repository.findByQuery(query, 'teacher');
+		return res.render('teachers', { user, teachers: filteredTeachers });
+	}
 
-  const user = req.cookies['auth']['user'];
-  let teachers = await repository.fetchAllByType('teacher');
+	let teachers = await repository.fetchAllByType('teacher');
 
-  teachers = teachers.map(teacher => {
+	teachers = teachers.map(teacher => {
+		return {
+			...teacher,
+			deletePath: `/teachers/delete?id=${teacher.id}`,
+			editPath: `/teachers/${teacher.id}`
+		};
+	});
 
-    return {
-      ...teacher,
-      deletePath: `/teachers/delete?id=${teacher.id}`,
-      editPath: `/teachers/${teacher.id}`
-    };
-  });
-
-  res.render('teachers', { user, teachers });
+	res.render('teachers', { user, teachers });
 });
 
 export default router;

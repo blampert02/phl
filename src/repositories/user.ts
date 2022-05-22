@@ -89,29 +89,25 @@ class UserRepository {
 		return user;
 	}
 
-	async findByQuery(query: string, type: UserType): Promise<User[]> {
+	async findByQuery(search: string, type: UserType): Promise<User[]> {
 		const users = await this.fetchAllByType(type);
 		const sanitize = (query: string) => query.toLowerCase().trim();
 
-		const findByEmail = (user: User) => sanitize(user.email).includes(sanitize(query));
-		const findByName = (user: User) => sanitize(user.firstName).includes(sanitize(query));
-		const findByLastName = (user: User) => sanitize(user.lastName).includes(sanitize(query));
-
-		const filteredUsers = users.filter(user => findByEmail(user) || findByName(user) || findByLastName(user));
+		const findByEmail = (user: User) => sanitize(user.email).includes(sanitize(search));
+		const findByName = (user: User) => sanitize(user.firstName).includes(sanitize(search));
+		const findByLastName = (user: User) => sanitize(user.lastName).includes(sanitize(search));
+		const findByLevel = (user: User) => {
+            const level = (user.level || 0).toString();
+            return sanitize(level).includes(sanitize(search));
+        };
+        const filteredUsers = users.filter(
+            user => findByEmail(user) || findByName(user) || findByLastName(user) || findByLevel(user)
+        );
 
 		console.log(filteredUsers);
 
 		return filteredUsers;
-		// if (students) {
-		// 	searchedStudents = students.filter(student => {
-		// 		filter = filter.toLocaleLowerCase().toString();
-		// 		return (
-		// 			student.firstName.toLocaleLowerCase().includes('Jefdale2') ||
-		// 			student.lastName.toLocaleLowerCase().includes(filter) ||
-		// 			student.email.toLocaleLowerCase().includes(filter)
-		// 		);
-		// 	});
-		// }
+
 	}
 
 	async fetchAllByType(type: UserType): Promise<User[]> {
