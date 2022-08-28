@@ -41,13 +41,12 @@
                     </div>
                     <div class="col-md-6">
                         <label for="inputPhone" class="form-label">Phone number</label>
-                        <input type="number" class="form-control" name="phoneNumber" placeholder="8765-4321" id="inputPhone" minlength="8" value="<%= user.phoneNumber%>" required="true"/>
+                        <input type="text" class="form-control" name="phoneNumber" value="<%= user.phoneNumber %>" placeholder="8765-4321" id="inputPhone" minlength="8" pattern="[0-9]{4}-[0-9]{4}" required="true">
                     </div>
                     <div class="col-md-6">
                         <label for="inputAge" class="form-label">Birthdate</label>
                         <input type="date" class="form-control" name="birthDate" id="inputAge" min='<%= minDate %>' max='<%= lastDate %>' value="<%= user.birthDate %>" required="true"/>
                     </div>
-                    <p><%= user.birthDate %></p>
                     <div class="col-md-6">
                         <label for="inputEmail4" class="form-label">Email</label>
                         <input type="email" class="form-control" name="email" placeholder="pottershouse@email.com" id="inputEmail4" value="<%= user.email %>" required="true"/>
@@ -68,10 +67,14 @@
                         <label for="inputCity" class="form-label">City</label>
                         <input type="text" class="form-control" name="city" id="inputCity" value="<%= user.city %>" required="true"/>
                     </div>
+                    <div class="col-md-6">
+                        <label for="inputBranch" class="form-label">Branch</label>
+                        <input type="text" class="form-control" name="branch" value="<%= user.branch %>" id="inputBranch" required="true"/>
+                    </div>
                     <div class="col-md-4">
                         <label for="inputState" class="form-label">Level</label>
                         <select id="inputState" name="level" class="form-select" required>
-                            <option value="">None</option>
+                            <option>None</option>
                             <option>1</option>
                             <option>2</option>
                         </select>
@@ -84,10 +87,19 @@
                             <option>false</option>
                         </select>
                     </div>
+                    <div class="col-md-4">
+                        <label for="inputState" class="form-label">Shift</label>
+                        <select id="inputState" name="shift" class="form-select" required>
+                            <option value="">None</option>
+                            <option>Morning</option>
+                            <option>Afternoon</option>
+                        </select>
+                    </div>
                     <div class="col-md-6">
                         <label for="inputLastName" class="form-label">Username</label>
                         <input type="text" class="form-control" name="username" placeholder="usernameLastName123" id="inputLastName" value="<%= user.username %>" required="true"/>
                     </div>
+                    <p></p>
                     <div class="col text-center">
                         <button id="submit-button" class="btn btn-primary w-50" type="submit" class="btn btn-default">
                             submit

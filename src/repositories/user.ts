@@ -52,6 +52,7 @@ class UserRepository {
 
 	async update(id: string, userInfo: UpdateUserInfo) {
 		this.collection.doc(id).update(userInfo);
+		console.log(userInfo);
 	}
 
 	async findByUsernameAndPassword(username: string, password: string): Promise<User | undefined> {
@@ -96,15 +97,15 @@ class UserRepository {
 		const findByEmail = (user: User) => sanitize(user.email).includes(sanitize(search));
 		const findByName = (user: User) => sanitize(user.firstName).includes(sanitize(search));
 		const findByLastName = (user: User) => sanitize(user.lastName).includes(sanitize(search));
+		const findByBranch = (user: User) => sanitize(user.branch).includes(sanitize(search));
+		const findByShift = (user: User) => sanitize(user.shift).includes(sanitize(search));
 		const findByLevel = (user: User) => {
             const level = (user.level || 0).toString();
             return sanitize(level).includes(sanitize(search));
         };
         const filteredUsers = users.filter(
-            user => findByEmail(user) || findByName(user) || findByLastName(user) || findByLevel(user)
+            user => findByEmail(user) || findByName(user) || findByLastName(user) || findByLevel(user) || findByBranch(user) || findByShift(user)
         );
-
-		console.log(filteredUsers);
 
 		return filteredUsers;
 
@@ -169,6 +170,8 @@ class UserRepository {
 			isActive: doc.isActive,
 			birthDate: doc.birthDate,
 			phoneNumber: doc.phoneNumber,
+			branch: doc.branch,
+			shift: doc.shift,
 			address: doc.address,
 			address2: doc.address2,
 			city: doc.city,

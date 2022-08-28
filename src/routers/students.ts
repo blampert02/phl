@@ -120,13 +120,16 @@ router.get('/add', verifyCookies, verifyUserAccountStatus, (req: Request, res: R
 	const month = date.getMonth() + 1;
 	const day = date.getDate();
 	let newMonth;
-	month < 10 ? (newMonth = '0' + month) : (newMonth = month);
+	let newDay;
 
+	month < 10 ? (newMonth = '0' + month) : (newMonth = month);
+	day < 10 ? (newDay = '0' + day) : (newDay = day);
+	
 	//MaxDate
-	const lastDate = year - 8 + '-' + newMonth + '-' + day;
+	const lastDate = year - 8 + '-' + newMonth + '-' + newDay;
 
 	//MinDate
-	const minDate = year - 100 + '-' + newMonth + '-' + day;
+	const minDate = year - 100 + '-' + newMonth + '-' + newDay;	
 
 	res.render('addStudentForm', { user, lastDate, minDate });
 });
@@ -139,13 +142,16 @@ router.get('/edit', verifyCookies, verifyUserAccountStatus, (req: Request, res: 
 	const month = date.getMonth() + 1;
 	const day = date.getDate();
 	let newMonth;
-	month < 10 ? (newMonth = '0' + month) : (newMonth = month);
+	let newDay;
 
+	month < 10 ? (newMonth = '0' + month) : (newMonth = month);
+	day < 10 ? (newDay = '0' + day) : (newDay = day);
+	
 	//MaxDate
-	const lastDate = year - 8 + '-' + newMonth + '-' + day;
+	const lastDate = year - 8 + '-' + newMonth + '-' + newDay;
 
 	//MinDate
-	const minDate = year - 100 + '-' + newMonth + '-' + day;
+	const minDate = year - 100 + '-' + newMonth + '-' + newDay;
 
 	res.render('editStudentForm', { user, lastDate, minDate });
 });
@@ -163,13 +169,15 @@ router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, 
 	const month = date.getMonth() + 1;
 	const day = date.getDate();
 	let newMonth;
+	let newDay;
 	month < 10 ? (newMonth = '0' + month) : (newMonth = month);
-
+	day < 10 ? (newDay = '0' + day) : (newDay = day);
+	
 	//MaxDate
-	const lastDate = year - 8 + '-' + newMonth + '-' + day;
+	const lastDate = year - 8 + '-' + newMonth + '-' + newDay;
 
 	//MinDate
-	const minDate = year - 100 + '-' + newMonth + '-' + day;
+	const minDate = year - 100 + '-' + newMonth + '-' + newDay;
 
 	res.render('editStudentForm', { user, lastDate, minDate });
 });

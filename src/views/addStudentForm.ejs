@@ -68,6 +68,11 @@
                         <label for="inputCity" class="form-label">City</label>
                         <input type="text" class="form-control" name="city" id="inputCity" required="true"/>
                     </div>
+                    <div class="col-md-6">
+                        <label for="inputBranch" class="form-label">Branch</label>
+                        <input type="text" class="form-control" name="branch" id="inputBranch" required="true"/>
+                    </div>
+
                     <div class="col-md-4">
                         <label for="inputState" class="form-label">Level</label>
                         <select id="inputState" name="level" class="form-select" required>
@@ -76,27 +81,38 @@
                             <option>2</option>
                         </select>
                     </div>
+
                     <div class="col-md-4">
                         <label for="inputState" class="form-label">License</label>
-
                         <select id="inputState" name="isActive" class="form-select" required="true">
                             <option value="">None</option>
                             <option>true</option>
                             <option>false</option>
                         </select>
                     </div>
+
+                    <div class="col-md-4">
+                        <label for="inputState" class="form-label">Shift</label>
+                        <select id="inputState" name="shift" class="form-select" required>
+                            <option value="">None</option>
+                            <option>Morning</option>
+                            <option>Afternoon</option>
+                        </select>
+                    </div>
+
                     <div class="col-md-6">
                         <label for="inputLastName" class="form-label">Username</label>
                         <input type="text" class="form-control" name="username" placeholder="usernameLastName123" id="inputLastName" required="true"/>
                     </div>
+
                     <p></p>
+
                     <div class="col text-center">
                         <button id="submit-button" class="btn btn-primary w-50" type="submit" class="btn btn-default">
                             submit
                         </button>
                     </div>
                 </form>
-                <input type="date" class="form-control" max="5-14-2014">
             </div>
             <%- include("./templates/footer") %>
         </main>

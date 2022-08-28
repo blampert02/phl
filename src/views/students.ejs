@@ -55,9 +55,10 @@
                         <tr>
                             <th scope="col">Nombre</th>
                             <th scope="col">Apellido</th>
+                            <th scope="col">Username</th>
                             <th scope="col">Level</th>
-                            <th scope="col">username</th>
-                            <th scope="col">address</th>
+                            <th scope="col">Branch</th>
+                            <th scope="col">Shift</th>
                             <th scope="col">email</th>
                             <th scope="col"></th>
                         </tr>
@@ -68,6 +69,7 @@
                                 <% }); %>
                     </ul>
                 </table>
+
                 <!--Choose file button-->
                 <label for="formFile" class="form-label">Import a student file</label>
                 <form action="/students/excel" method="post" enctype="multipart/form-data" class="input-group">

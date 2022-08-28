@@ -7,13 +7,16 @@
             <%= user.lastName %>
         </td>
         <td>
-            <%= user.level %>
-        </td>
-        <td>
             <%= user.username %>
         </td>
         <td>
-            <%= user.address %>
+            <%= user.level %>
+        </td>
+        <td>
+            <%= user.branch %>
+        </td>
+        <td>
+            <%= user.shift %>
         </td>
         <td>
             <%= user.email %>
@@ -22,9 +25,6 @@
             <form action="<%= user.editPath %>" method="get">
                 <button id="EditStudentsButton" type="submit" class="btn btn-outline-primary rounded-pill">Edit</button>
             </form>
-        </td>
-        <td>
-            <button class="btn btn-outline-dark rounded-pill" class="badge bg-secondary-outline rounded-pill">Scores</button>
         </td>
         <td>
             <button class="btn btn-outline-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#deleteModal<%= user.id %>">Remove</button>

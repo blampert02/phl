@@ -11,6 +11,8 @@ export type User = {
   isActive: boolean;//All
   username: string; //All
   phoneNumber: string;//All
+  branch: string;//all
+  shift: string;//all
   city?: string; //Students
   birthDate?: Date; //Students
   level?: number; //Students
@@ -30,6 +32,8 @@ export function createUser(id: string, type: UserType, info: any): User {
     isActive: info.isActive == 'true',
     birthDate: info.birthDate,
     phoneNumber: info.phoneNumber,
+    branch: info.branch,
+    shift: info.shift,
     address: info.address,
     address2: info.address2,
     city: info.city,
