@@ -12,12 +12,24 @@ export type Survey = {
   options: Question[];
 };
 
-export async function getAnswers(): Promise<any> {
-  const response = await fetch('https://forms.googleapis.com/v1/forms/1IPzUL0kl5R35zfAIIlWSYNyBKZo4Kadsmt6EaShD4y8', {
+export async function getFormById(formId: string): Promise<any> {
+  const response = await fetch(`https://forms.googleapis.com/v1/forms/${formId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
+
+  const formResponses = await fetch(`https://forms.googleapis.com/v1/forms/${formId}/responses`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (response.status !== 200) return undefined;
+  if (formResponses.status !== 200) return undefined;
+
+  const form = await response.json();
+  const questions = new Map<string, Question>();
 
   return await response.json();
 }
