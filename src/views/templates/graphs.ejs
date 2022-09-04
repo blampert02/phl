@@ -1,37 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../public/assets/css/graphs.css">
-    <title>Charts</title>
-
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
-
-      function drawChart() {
-
-        var data = google.visualization.arrayToDataTable([
-          ['Surveys', ' - '],
-          ['1', 1]
-        ]);
-
-        var options = {
-          title: 'My Daily Activities'
-        };
-
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-        chart.draw(data, options);
-      }
-    </script>
-
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
+
 <body>
-     <div id="piechart" style="width: 900px; height: 500px;"></div>
+  <main class="main" id="main">
+    <div class="container">
+      <div id="piechart<%=survey.title%>" style="width: 900px; height: 500px;"></div>
+    </div>
+  </main>
+
+  <script>
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      const title = '<%-survey.title%>';
+      const questions = JSON.parse('<%-questions%>');
+      const tableItems = questions.map(question => {
+        return [question.answer, question.selectedCount];
+      });
+
+      const data = google.visualization.arrayToDataTable([
+        [title, title],
+        ...tableItems
+      ]);
+
+      const chart = new google.visualization.PieChart(document.getElementById('piechart<%=survey.title%>'));
+      chart.draw(data, { title });
+    }
+  </script>
 </body>
-</html>

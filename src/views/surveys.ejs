@@ -28,14 +28,13 @@
     
     <body>   
         <%- include("./templates/navbar") %>
-
         <main id="main" class="main">
             <div class="container">
-            <!-- Add the for each -->
-                <%- include("./templates/graphs")  %> 
+            <% JSON.parse(surveys).forEach(function(survey) { %>
+                <%- include('./templates/graphs', { survey, questions: JSON.stringify(survey.options) }); %>
+            <% }); %>
             </div>
         </main>
-
     </body>
   
     <script src="assets/js/main.js"></script>
