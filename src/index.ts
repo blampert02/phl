@@ -9,10 +9,11 @@ import cookieParser from 'cookie-parser';
 import verifyCookies, { verifyUserAccountStatus } from './middlewares/verifyCookies';
 import studentRouter from './routers/students';
 import teacherRouter from './routers/teachers';
+import moderatorRouter from './routers/moderators'
+import adminRouter from './routers/admins'
 import filesRouter from './routers/files';
 import repository from './repositories/user';
 import { AddressInfo } from 'net';
-import { synchronize } from './data-sync';
 import fileRepository from './repositories/file';
 import cors from 'cors';
 
@@ -27,7 +28,11 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
+
+//When creating a new router you need to add it here
 app.use('/students', studentRouter);
+app.use('/moderators', moderatorRouter);
+app.use('/admins', adminRouter);
 app.use('/teachers', teacherRouter);
 app.use('/files', filesRouter);
 
@@ -57,6 +62,11 @@ app.get('/', verifyCookies, verifyUserAccountStatus, (req: Request, res: Respons
 
 app.get('/privacy', (_req: Request, res: Response) => {
 	return res.render('privacy');
+});
+
+app.get('/surveys', (req: Request, res: Response) => {
+	const user = req.cookies['auth']['user'];
+	return res.render('surveys', { user });
 });
 
 app.get('/login', (req: Request, res: Response) => {

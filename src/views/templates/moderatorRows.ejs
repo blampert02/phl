@@ -1,0 +1,48 @@
+<tbody>
+    <tr>
+        <td>
+            <%= moderator.firstName %>
+        </td>
+        <td>
+            <%= moderator.lastName %>
+        </td>
+        <td>
+            <%= moderator.email %>
+        </td>
+        <td>
+            <form action="<%= moderator.editPath %>" method="get">
+                <button id="EditModeratorsButton" type="submit" class="btn btn-outline-primary rounded-pill">Edit</button>
+            </form>
+        </td>
+        <td>
+            <button class="btn btn-outline-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#deleteModal<%= moderator.id %>">Remove</button>
+        </td>
+    </tr>
+</tbody>
+
+<!--DeleteModal-->
+<div class="modal fade" id="deleteModal<%= moderator.id %>" tabindex="-1" aria-labelledby="deleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Warning</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span style="margin-bottom: 100px;">
+                    Do you really want to delete
+                    <%='"' + moderator.firstName + " " + moderator.lastName + '"' %> from the list?
+                </span>
+                <p></p>
+                <form action="<%= moderator.deletePath %>" role="form" method="POST">
+                    <input class="form-control input-lg" name="filename" style="display: none;"
+                        value="<%= moderator.firstName %>">
+                    <input class="form-control input-lg" name="id" style="display: none;" value="<%= moderator.id %>">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

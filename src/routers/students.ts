@@ -61,6 +61,8 @@ eventEmitter.on('error', async (message: string) => {
 	console.log('An error has occurred:', message);
 });
 
+//Excel reader
+
 router.post('/excel', upload.single('file_data'), async (req: Request, res: Response) => {
 	if (!req.file) return res.redirect('/students');
 
@@ -131,7 +133,7 @@ router.get('/add', verifyCookies, verifyUserAccountStatus, (req: Request, res: R
 	//MinDate
 	const minDate = year - 100 + '-' + newMonth + '-' + newDay;	
 
-	res.render('addStudentForm', { user, lastDate, minDate });
+	res.render('Forms/addStudentForm', { user, lastDate, minDate });
 });
 
 router.get('/edit', verifyCookies, verifyUserAccountStatus, (req: Request, res: Response) => {
@@ -153,7 +155,7 @@ router.get('/edit', verifyCookies, verifyUserAccountStatus, (req: Request, res: 
 	//MinDate
 	const minDate = year - 100 + '-' + newMonth + '-' + newDay;
 
-	res.render('editStudentForm', { user, lastDate, minDate });
+	res.render('Forms/editStudentForm', { user, lastDate, minDate });
 });
 
 router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {
@@ -179,7 +181,7 @@ router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, 
 	//MinDate
 	const minDate = year - 100 + '-' + newMonth + '-' + newDay;
 
-	res.render('editStudentForm', { user, lastDate, minDate });
+	res.render('Forms/editStudentForm', { user, lastDate, minDate });
 });
 
 router.get('/:filter', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {});

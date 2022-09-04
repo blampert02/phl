@@ -1,11 +1,7 @@
 import firebaseAdmin from 'firebase-admin';
-import admin from 'firebase-admin'
 import Path from 'path';
-import firebase = require('firebase/app');
-import { nanoid } from 'nanoid';
-import { initializeApp } from 'firebase/app';
-import { UserRecord } from 'firebase-admin/lib/auth/user-record';
-import { isUidIdentifier } from 'firebase-admin/lib/auth/identifier';
+
+
 
 firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert(

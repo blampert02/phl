@@ -12,8 +12,6 @@ type ColumnType =
 	| 'Last Name'
 	| 'Email'
 	| 'Phone Number'
-	| 'Branch'
-	| 'Shift'
 	| 'Address'
 	| 'Address 2'
 	| 'Password'
@@ -38,8 +36,6 @@ export async function readExcelFile(buffer: Buffer, type: UserType): Promise<Use
 		readColumnValues(getColumnByType(columns, 'Last Name')),
 		readColumnValues(getColumnByType(columns, 'Email')),
 		readColumnValues(getColumnByType(columns, 'Phone Number')),
-		readColumnValues(getColumnByType(columns, 'Branch')),
-		readColumnValues(getColumnByType(columns, 'Shift')),
 		readColumnValues(getColumnByType(columns, 'Address')),
 		readColumnValues(getColumnByType(columns, 'Address 2')),
 		readColumnValues(getColumnByType(columns, 'Password')),
@@ -52,14 +48,12 @@ export async function readExcelFile(buffer: Buffer, type: UserType): Promise<Use
 	const lastNameValues = readValues[1];
 	const emailValues = readValues[2];
 	const phoneNumberValues = readValues[3];
-	const branchValues = readValues[4];
-	const shiftValues = readValues[5];
-	const addressValues = readValues[6];
-	const address2Values = readValues[7];
-	const passwordValues = readValues[8];
-	const usernameValues = readValues[9];
-	const isActiveValues = readValues[10].map(value => value.toLowerCase() === 'true');
-	const inssValues = readValues[11];
+	const addressValues = readValues[4];
+	const address2Values = readValues[5];
+	const passwordValues = readValues[6];
+	const usernameValues = readValues[7];
+	const isActiveValues = readValues[8].map(value => value.toLowerCase() === 'true');
+	const inssValues = readValues[9];
 
 	const rowsLength = nameValues.length;
 
@@ -76,8 +70,6 @@ export async function readExcelFile(buffer: Buffer, type: UserType): Promise<Use
 			lastName: lastNameValues[index],
 			isActive: isActiveValues[index],
 			phoneNumber: phoneNumberValues[index],
-			branch: branchValues[index],
-			shift: shiftValues[index],
 			address: addressValues[index],
 			address2: address2Values[index],
 			inss: inssValues[index],

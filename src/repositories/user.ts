@@ -97,8 +97,16 @@ class UserRepository {
 		const findByEmail = (user: User) => sanitize(user.email).includes(sanitize(search));
 		const findByName = (user: User) => sanitize(user.firstName).includes(sanitize(search));
 		const findByLastName = (user: User) => sanitize(user.lastName).includes(sanitize(search));
-		const findByBranch = (user: User) => sanitize(user.branch).includes(sanitize(search));
-		const findByShift = (user: User) => sanitize(user.shift).includes(sanitize(search));
+		const findByBranch = (user: User) => {
+            const branch = (user.branch || 'undefined').toString();
+            return sanitize(branch).includes(sanitize(search));
+        };
+
+		const findByShift = (user: User) => {
+            const shift = (user.shift || 'undefined').toString();
+            return sanitize(shift).includes(sanitize(search));
+        };
+
 		const findByLevel = (user: User) => {
             const level = (user.level || 0).toString();
             return sanitize(level).includes(sanitize(search));

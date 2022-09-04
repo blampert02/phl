@@ -1,4 +1,4 @@
-export type UserType = 'teacher' | 'student';
+export type UserType = 'teacher' | 'student' | 'moderator' | 'admin';
 
 export type User = {
   id: string;//All
@@ -11,8 +11,8 @@ export type User = {
   isActive: boolean;//All
   username: string; //All
   phoneNumber: string;//All
-  branch: string;//all
-  shift: string;//all
+  branch?: string;//all
+  shift?: string;//all
   city?: string; //Students
   birthDate?: Date; //Students
   level?: number; //Students

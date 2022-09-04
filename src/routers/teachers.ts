@@ -78,7 +78,7 @@ router.post('/excel', upload.single('file_data'), async (req: Request, res: Resp
 router.get('/add', verifyCookies, verifyUserAccountStatus, (req: Request, res: Response) => {
 
 	const user = req.cookies['auth']['user'];
-	res.render('addTeachersForm', { user });
+	res.render('Forms/addTeachersForm', { user });
 
 });
 
@@ -90,7 +90,7 @@ router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, 
 	if (user === undefined) {
 		return res.status(404).json({ message: 'The requested resource was not found', status: 404, type: 'not_found' });
 	}
-	res.render('editTeacherForm', { user });
+	res.render('Forms/editTeacherForm', { user });
 });
 
 router.post('/', async (req: Request, res: Response) => {
