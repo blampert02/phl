@@ -11,6 +11,8 @@ passport.deserializeUser(function (user: any, done) {
   done(null, user);
 });
 
+export let token = '';
+
 passport.use(
   new GoogleStrategy(
     {
@@ -21,7 +23,7 @@ passport.use(
     },
     function (request: Request, accessToken: string, refreshToken: string, profile: any, done: any) {
       console.log(`Access token -> ${accessToken}`);
-
+      token = accessToken;
       return done(null, profile);
     }
   )

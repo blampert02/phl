@@ -16,7 +16,7 @@ import repository from './repositories/user';
 import { AddressInfo } from 'net';
 import fileRepository from './repositories/file';
 import cors from 'cors';
-import { getSurveys } from './models/survey';
+import { getSurveys, getAnswers as getForm } from './models/survey';
 import passport from 'passport';
 import cookieSession from 'cookie-session';
 import session from 'express-session';
@@ -115,7 +115,9 @@ app.get('/failed', (req: Request, res: Response) => {
   res.send('Failed');
 });
 
-app.get('/success', (req: Request, res: Response) => {
+app.get('/success', async (req: Request, res: Response) => {
+	const questions = await getForm();
+	console.log(questions);
   return res.send(req.session);
 });
 
