@@ -125,9 +125,11 @@ app.get('/privacy', (_req: Request, res: Response) => {
 
 app.get('/surveys', async (req: Request, res: Response) => {
   const credentials = getOAuth2Credentials();
-  if (await isTokenValid(credentials.token)) {
-    return res.redirect('/google');
+  if (!(await isTokenValid(credentials.token))) {
+    const success = await renewToken(credentials.refreshToken);
+    if (!success) return res.redirect('/google');
   }
+
   const surveys = await getSurveys('1IPzUL0kl5R35zfAIIlWSYNyBKZo4Kadsmt6EaShD4y8');
   const user = req.cookies['auth']['user'];
 

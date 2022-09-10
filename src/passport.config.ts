@@ -39,20 +39,20 @@ export async function isTokenValid(token: string): Promise<boolean> {
 
 export async function renewToken(refreshToken: string): Promise<boolean> {
   const url = new URL('https://oauth2.googleapis.com/token');
- 
+
   const response = await fetch(url.toString(), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: new URLSearchParams({
-      'client_id': OAUTH2_CLIENT_ID,
-      'client_secret': OAUTH2_CLIENT_SECRET,
-      'grant_type': 'refresh_token',
-      'refresh_token': refreshToken
+      client_id: OAUTH2_CLIENT_ID,
+      client_secret: OAUTH2_CLIENT_SECRET,
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken,
     }),
   });
-    
+
   if (response.status !== 200) return false;
 
   const credentials = await response.json();
@@ -62,8 +62,7 @@ export async function renewToken(refreshToken: string): Promise<boolean> {
 }
 
 passport.use(
-  new GoogleStrategy(
-    {
+  new GoogleStrategy({
       clientID: OAUTH2_CLIENT_ID,
       clientSecret: OAUTH2_CLIENT_SECRET,
       callbackURL: 'http://localhost:3000/callback',
