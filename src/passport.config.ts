@@ -39,29 +39,20 @@ export async function isTokenValid(token: string): Promise<boolean> {
 
 export async function renewToken(refreshToken: string): Promise<boolean> {
   const url = new URL('https://oauth2.googleapis.com/token');
-  const content: any = {
-    client_id: OAUTH2_CLIENT_ID,
-    client_secret: OAUTH2_CLIENT_SECRET,
-    grant_type: 'refresh_token',
-    refresh_token: refreshToken,
-  };
-  const formBody: any = [];
-
-  for (let property in content) {
-    const encodedKey = encodeURIComponent(property);
-    const encodedValue = encodeURIComponent(content[property]);
-    formBody.push(encodedKey + '=' + encodedValue);
-  }
-
+ 
   const response = await fetch(url.toString(), {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
-    body: formBody,
+    body: new URLSearchParams({
+      'client_id': OAUTH2_CLIENT_ID,
+      'client_secret': OAUTH2_CLIENT_SECRET,
+      'grant_type': 'refresh_token',
+      'refresh_token': refreshToken
+    }),
   });
-  
-  console.log(await response.json());
+    
   if (response.status !== 200) return false;
 
   const credentials = await response.json();
@@ -80,6 +71,7 @@ passport.use(
     },
     function (request: Request, accessToken: string, refreshToken: string, profile: any, done: any) {
       console.log(`Access token -> ${accessToken}`);
+      console.log(`Refresh token -> ${refreshToken}`);
 
       internalOAuth2Credentials.token = accessToken;
       internalOAuth2Credentials.refreshToken = refreshToken;

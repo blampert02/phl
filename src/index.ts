@@ -81,6 +81,7 @@ app.get('/', verifyCookies, verifyUserAccountStatus, (req: Request, res: Respons
 
 app.get(
   '/google',
+  // @ts-ignore
   passport.authenticate('google', {
     scope: [
       'profile',
@@ -90,6 +91,7 @@ app.get(
       'https://www.googleapis.com/auth/drive.readonly',
       'https://www.googleapis.com/auth/forms.body',
     ],
+    accessType: 'offline',
   })
 );
 
