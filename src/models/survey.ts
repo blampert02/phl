@@ -1,5 +1,5 @@
 import fetch from 'cross-fetch';
-import { token } from '../passport.config';
+import { getOAuth2Credentials } from '../passport.config';
 
 export type Question = {
   answer: string;
@@ -13,15 +13,16 @@ export type Survey = {
 };
 
 export async function getFormById(formId: string): Promise<any> {
+  const credentials = getOAuth2Credentials();
   const response = await fetch(`https://forms.googleapis.com/v1/forms/${formId}`, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${credentials.token}`,
     },
   });
 
   const formResponses = await fetch(`https://forms.googleapis.com/v1/forms/${formId}/responses`, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${credentials.token}`,
     },
   });
 

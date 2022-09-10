@@ -11,7 +11,7 @@ import studentRouter from './routers/students';
 import teacherRouter from './routers/teachers';
 import moderatorRouter from './routers/moderators';
 import adminRouter from './routers/admins';
-import forumRouter from './routers/forum'
+import forumRouter from './routers/forum';
 import filesRouter from './routers/files';
 import repository from './repositories/user';
 import { AddressInfo } from 'net';
@@ -19,9 +19,8 @@ import fileRepository from './repositories/file';
 import cors from 'cors';
 import { getSurveys, getFormById as getForm } from './models/survey';
 import passport from 'passport';
-import cookieSession from 'cookie-session';
 import session from 'express-session';
-import {token} from './passport.config' ;
+import { getOAuth2Credentials, isTokenValid, renewToken } from './passport.config';
 
 const app = express();
 app.set('views', Path.join(__dirname, './views'));
@@ -49,22 +48,12 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-// app.use(
-//   cookieSession({
-//     name: 'google-auth-session',
-//     keys: ['key1', 'key2'],
-//   })
-// );
-
-//When creating a new router you need to add it here
 app.use('/students', studentRouter);
 app.use('/moderators', moderatorRouter);
 app.use('/admins', adminRouter);
 app.use('/teachers', teacherRouter);
 app.use('/files', filesRouter);
 app.use('/forum', forumRouter);
-
 
 const dotEnvResult = dotenv.config();
 
@@ -133,17 +122,17 @@ app.get('/privacy', (_req: Request, res: Response) => {
 });
 
 app.get('/surveys', async (req: Request, res: Response) => {
-  if(token === ''){
-   return res.redirect('/google');
+  const credentials = getOAuth2Credentials();
+  if (await isTokenValid(credentials.token)) {
+    return res.redirect('/google');
   }
   const surveys = await getSurveys('1IPzUL0kl5R35zfAIIlWSYNyBKZo4Kadsmt6EaShD4y8');
   const user = req.cookies['auth']['user'];
 
   console.log(surveys);
-  
+
   return res.render('surveys', { user, surveys: JSON.stringify(surveys) });
 });
-
 app.get('/login', (req: Request, res: Response) => {
   if (req.cookies['auth']) {
     res.redirect('/');
@@ -169,7 +158,7 @@ app.post('/authenticate', async (req: Request, res: Response) => {
     res.cookie('auth', { user });
     return res.redirect('/');
   }
-  console.error("---->> This user is not allowed to Login or it doesnt exist. <<----");
+  console.error('---->> This user is not allowed to Login or it doesnt exist. <<----');
   return res.redirect('/login');
 });
 
@@ -194,6 +183,17 @@ app.get('/unauthorized', verifyCookies, (req: Request, res: Response) => {
 app.get('/files-all', async (req: Request, res: Response) => {
   const files = await fileRepository.findAll();
   return res.json(files);
+});
+
+app.get('/test', async (req: Request, res: Response) => {
+  const credentials = getOAuth2Credentials();
+  const success = await isTokenValid(credentials.token);
+  const newToken = await renewToken(credentials.refreshToken);
+
+  return res.status(200).json({
+    is_valid: success,
+    token: newToken,
+  });
 });
 
 const server = app.listen(process.env.PORT, () => {
