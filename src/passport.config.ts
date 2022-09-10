@@ -4,8 +4,11 @@ import { Request } from 'express';
 import passport from 'passport';
 import OAuth2 from 'passport-google-oauth2';
 import { URL } from 'url';
+import { google } from 'googleapis';
 
 const GoogleStrategy = OAuth2.Strategy;
+
+export const oauth2Client = new google.auth.OAuth2(OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET);
 
 passport.serializeUser(function (user, done) {
   done(null, user);
@@ -62,13 +65,18 @@ export async function renewToken(refreshToken: string): Promise<boolean> {
 }
 
 passport.use(
-  new GoogleStrategy({
+  new GoogleStrategy(
+    {
       clientID: OAUTH2_CLIENT_ID,
       clientSecret: OAUTH2_CLIENT_SECRET,
       callbackURL: 'http://localhost:3000/callback',
       passReqToCallback: true,
     },
     function (request: Request, accessToken: string, refreshToken: string, profile: any, done: any) {
+      oauth2Client.setCredentials({
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      });
       console.log(`Access token -> ${accessToken}`);
       console.log(`Refresh token -> ${refreshToken}`);
 

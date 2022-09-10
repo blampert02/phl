@@ -1,5 +1,7 @@
+import { OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET } from './../constants';
 import fetch from 'cross-fetch';
-import { getOAuth2Credentials } from '../passport.config';
+import { getOAuth2Credentials, oauth2Client } from '../passport.config';
+import { google } from 'googleapis';
 
 export type Question = {
   answer: string;
@@ -25,18 +27,17 @@ export async function getFormById(formId: string): Promise<any> {
       Authorization: `Bearer ${credentials.token}`,
     },
   });
+  const form = await response.json();
+  console.log(form);
 
   if (response.status !== 200) return undefined;
   if (formResponses.status !== 200) return undefined;
 
-  const form = await response.json();
   const questions = new Map<string, Question>();
-
-  return await response.json();
+  return form;
 }
 
 export async function getSurveys(formId: string): Promise<Survey[]> {
-
   return Promise.resolve([
     {
       id: '1',

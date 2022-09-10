@@ -17,7 +17,7 @@ import repository from './repositories/user';
 import { AddressInfo } from 'net';
 import fileRepository from './repositories/file';
 import cors from 'cors';
-import { getSurveys, getFormById as getForm } from './models/survey';
+import { getSurveys, getFormById } from './models/survey';
 import passport from 'passport';
 import session from 'express-session';
 import { getOAuth2Credentials, isTokenValid, renewToken } from './passport.config';
@@ -110,8 +110,6 @@ app.get('/failed', (req: Request, res: Response) => {
 });
 
 app.get('/success', async (req: Request, res: Response) => {
-  const questions = await getForm('1IPzUL0kl5R35zfAIIlWSYNyBKZo4Kadsmt6EaShD4y8');
-  console.log(questions);
   return res.send(req.session);
 });
 
@@ -124,11 +122,13 @@ app.get('/privacy', (_req: Request, res: Response) => {
 });
 
 app.get('/surveys', async (req: Request, res: Response) => {
+  await getFormById('1IPzUL0kl5R35zfAIIlWSYNyBKZo4Kadsmt6EaShD4y8');
   const credentials = getOAuth2Credentials();
   if (!(await isTokenValid(credentials.token))) {
     const success = await renewToken(credentials.refreshToken);
     if (!success) return res.redirect('/google');
   }
+
 
   const surveys = await getSurveys('1IPzUL0kl5R35zfAIIlWSYNyBKZo4Kadsmt6EaShD4y8');
   const user = req.cookies['auth']['user'];
