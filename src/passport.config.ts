@@ -50,7 +50,7 @@ export async function renewToken(refreshToken: string): Promise<boolean> {
       refreshToken,
     }),
   });
-
+  console.log(await response.json());
   if (response.status !== 200) return false;
 
   const credentials = await response.json();
