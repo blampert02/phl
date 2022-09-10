@@ -12,7 +12,7 @@ interface UpdateUserInfo {
 }
 
 interface UpdateStudentInfo extends UpdateUserInfo {
-	level: number;
+	level: string;
 }
 
 interface UpdateTeacherInfo extends UpdateUserInfo {
@@ -108,7 +108,7 @@ class UserRepository {
         };
 
 		const findByLevel = (user: User) => {
-            const level = (user.level || 0).toString();
+            const level = (user.level || 'undefined').toString();
             return sanitize(level).includes(sanitize(search));
         };
         const filteredUsers = users.filter(
@@ -154,7 +154,8 @@ class UserRepository {
 		return user;
 	}
 
-	async findByLevel(level: number): Promise<User | undefined> {
+
+	async findByLevel(level: string): Promise<User | undefined> {
 		const querySnapshot = await this.collection.where('level', '==', level).get();
 
 		if (querySnapshot.empty) {

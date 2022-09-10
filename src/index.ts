@@ -11,6 +11,7 @@ import studentRouter from './routers/students';
 import teacherRouter from './routers/teachers';
 import moderatorRouter from './routers/moderators';
 import adminRouter from './routers/admins';
+import forumRouter from './routers/forum'
 import filesRouter from './routers/files';
 import repository from './repositories/user';
 import { AddressInfo } from 'net';
@@ -20,7 +21,7 @@ import { getSurveys, getFormById as getForm } from './models/survey';
 import passport from 'passport';
 import cookieSession from 'cookie-session';
 import session from 'express-session';
-import './passport.config';
+import {token} from './passport.config' ;
 
 const app = express();
 app.set('views', Path.join(__dirname, './views'));
@@ -62,6 +63,8 @@ app.use('/moderators', moderatorRouter);
 app.use('/admins', adminRouter);
 app.use('/teachers', teacherRouter);
 app.use('/files', filesRouter);
+app.use('/forum', forumRouter);
+
 
 const dotEnvResult = dotenv.config();
 
@@ -130,8 +133,14 @@ app.get('/privacy', (_req: Request, res: Response) => {
 });
 
 app.get('/surveys', async (req: Request, res: Response) => {
-  const surveys = await getSurveys();
+  if(token === ''){
+   return res.redirect('/google');
+  }
+  const surveys = await getSurveys('1IPzUL0kl5R35zfAIIlWSYNyBKZo4Kadsmt6EaShD4y8');
   const user = req.cookies['auth']['user'];
+
+  console.log(surveys);
+  
   return res.render('surveys', { user, surveys: JSON.stringify(surveys) });
 });
 
@@ -160,7 +169,7 @@ app.post('/authenticate', async (req: Request, res: Response) => {
     res.cookie('auth', { user });
     return res.redirect('/');
   }
-
+  console.error("---->> This user is not allowed to Login or it doesnt exist. <<----");
   return res.redirect('/login');
 });
 
@@ -169,8 +178,7 @@ app.get('/logout', (req: Request, res: Response) => {
     res.clearCookie('auth');
     res.redirect('/login');
   }
-
-  res.redirect('/login');
+  // res.redirect('/login');
 });
 
 app.get('/unauthorized', verifyCookies, (req: Request, res: Response) => {

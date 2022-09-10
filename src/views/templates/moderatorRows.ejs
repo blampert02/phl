@@ -10,6 +10,9 @@
             <%= moderator.email %>
         </td>
         <td>
+            <%= moderator.username %>
+        </td>
+        <td>
             <form action="<%= moderator.editPath %>" method="get">
                 <button id="EditModeratorsButton" type="submit" class="btn btn-outline-primary rounded-pill">Edit</button>
             </form>

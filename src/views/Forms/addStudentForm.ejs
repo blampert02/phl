@@ -31,9 +31,11 @@
         <%- include("../templates/navbar") %>
         <main id="main" class="main">
             <div class="container">
-                <figure class="text-center">
-                    <h1 class="display-6"><strong>Students adding interface</strong></h1>
-                </figure>
+                <div class="card-title text-center">
+                    <div class="card-body">
+                        <h1 class="display-6"><strong>Students adding interface</strong></h1>
+                    </div>
+                </div>
                 <form class="row g-3" action="/students" method="post">
                     <div class="col-md-6">
                         <label for="inputName" class="form-label">Name</label>
@@ -81,8 +83,9 @@
                         <select id="inputState" name="level" class="form-select" required>
                             <option value="">None</option>
                             <option>Induction</option>
-                            <option>intermediate</option>
-                            <option>Advanced</option>
+                            <option>Basic level (First level)</option>
+                            <option>Intermediate level (Second level)</option>
+                            <option>English for kids</option>
                         </select>
                     </div>
 

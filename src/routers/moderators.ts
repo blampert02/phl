@@ -28,7 +28,7 @@ router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, 
 	if (user === undefined) {
 		return res.status(404).json({ message: 'The requested resource was not found', status: 404, type: 'not_found' });
 	}
-	res.render('editModeratorForm', { user });
+	res.render('Forms/editModeratorForm', { user });
 });
 
 router.post('/', async (req: Request, res: Response) => {

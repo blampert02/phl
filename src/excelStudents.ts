@@ -61,7 +61,7 @@ export async function readExcelFile(buffer: Buffer, type: UserType): Promise<Use
 	const cityValues = readValues[8];
 	const passwordValues = readValues[9];
 	const usernameValues = readValues[10];
-	const birthdateValues = readValues[11].map(value => new Date(value));
+	const birthdateValues = readValues[11];
 	const isActiveValues = readValues[12].map(value => value.toLowerCase() === 'true');
 	const levelValues = readValues[13];
 
@@ -86,7 +86,7 @@ export async function readExcelFile(buffer: Buffer, type: UserType): Promise<Use
 			address: addressValues[index],
 			address2: address2Values[index],
 			city: cityValues[index],
-			level: +levelValues[index],
+			level: levelValues[index],
 		};
 	}
 

@@ -34,7 +34,8 @@ export async function getFormById(formId: string): Promise<any> {
   return await response.json();
 }
 
-export function getSurveys(): Promise<Survey[]> {
+export async function getSurveys(formId: string): Promise<Survey[]> {
+
   return Promise.resolve([
     {
       id: '1',
@@ -51,24 +52,6 @@ export function getSurveys(): Promise<Survey[]> {
         {
           answer: 'blue',
           selectedCount: 5,
-        },
-      ],
-    },
-    {
-      id: '2',
-      title: 'What is your favorite food?',
-      options: [
-        {
-          answer: 'Ramen',
-          selectedCount: 2,
-        },
-        {
-          answer: 'Soup',
-          selectedCount: 7,
-        },
-        {
-          answer: 'Cookies',
-          selectedCount: 6,
         },
       ],
     },

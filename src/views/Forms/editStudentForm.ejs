@@ -47,16 +47,16 @@
                         <input type="text" class="form-control" name="phoneNumber" value="<%= user.phoneNumber %>" placeholder="8765-4321" id="inputPhone" minlength="8" pattern="[0-9]{4}-[0-9]{4}" required="true">
                     </div>
                     <div class="col-md-6">
-                        <label for="inputAge" class="form-label">Birthdate</label>
-                        <input type="date" class="form-control" name="birthDate" id="inputAge" min='<%= minDate %>' max='<%= lastDate %>' value="<%= user.birthDate %>" required="true"/>
-                    </div>
-                    <div class="col-md-6">
                         <label for="inputEmail4" class="form-label">Email</label>
                         <input type="email" class="form-control" name="email" placeholder="pottershouse@email.com" id="inputEmail4" value="<%= user.email %>" required="true"/>
                     </div>
                     <div class="col-md-6">
                         <label for="inputPassword4" class="form-label">Password</label>
                         <input type="password" minlength="6" class="form-control" name="password" placeholder="Password" id="inputPassword4"  value="<%= user.password %>" required="true"/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputAge" class="form-label">Birthdate</label>
+                        <input type="date" class="form-control" name="birthDate" id="inputAge" value="<%= user.birthDate %>" min='<%= minDate %>' max='<%= lastDate %>' required="true"/>
                     </div>
                     <div class="col-12">
                         <label for="inputAddress" class="form-label">Address</label>
@@ -77,16 +77,17 @@
                     <div class="col-md-4">
                         <label for="inputState" class="form-label">Level</label>
                         <select id="inputState" name="level" class="form-select" required>
-                            <option>None</option>
+                            <option><%= user.level %> </option>
                             <option>Induction</option>
-                            <option>intermediate</option>
-                            <option>Advanced</option>
+                            <option>Basic level (First level)</option>
+                            <option>Intermediate level (Second level)</option>
+                            <option>English for kids</option>
                         </select>
                     </div>
                     <div class="col-md-4">
                         <label for="inputState" class="form-label">License</label>
                         <select id="inputState" name="isActive" class="form-select" required>
-                            <option value="">Options</option>
+                            <option><%= user.isActive %> </option>
                             <option>true</option>
                             <option>false</option>
                         </select>
@@ -94,7 +95,7 @@
                     <div class="col-md-4">
                         <label for="inputState" class="form-label">Shift</label>
                         <select id="inputState" name="shift" class="form-select" required>
-                            <option value="">None</option>
+                            <option><%= user.shift %></option>
                             <option>Diario (8:00 am -10:00 am)</option>
                             <option>Diario (10:00 am -12:00 md)</option>
                             <option>Diario (1:15 pm -2:30 pm)</option>

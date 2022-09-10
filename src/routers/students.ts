@@ -161,10 +161,13 @@ router.get('/edit', verifyCookies, verifyUserAccountStatus, (req: Request, res: 
 router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {
 	const id = req.params.id;
 	const user = await repository.findByIdAndType(id, 'student');
-
+	
 	if (user === undefined) {
 		return res.status(404).json({ message: 'The requested resource was not found', status: 404, type: 'not_found' });
 	}
+
+	let bd = user.birthDate;
+	console.log(bd);
 
 	const date = new Date();
 	const year = date.getFullYear();
@@ -181,7 +184,7 @@ router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, 
 	//MinDate
 	const minDate = year - 100 + '-' + newMonth + '-' + newDay;
 
-	res.render('Forms/editStudentForm', { user, lastDate, minDate });
+	res.render('Forms/editStudentForm', { user, lastDate, minDate, bd });
 });
 
 router.get('/:filter', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {});
