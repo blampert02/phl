@@ -31,7 +31,6 @@ router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, 
 });
 
 router.post('/', async (req: Request, res: Response) => {
-
 	await signUp(req.body.email, req.body.password, 'admin', req.body);
 	res.redirect('/admins');
 

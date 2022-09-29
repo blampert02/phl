@@ -1,9 +1,10 @@
 <tbody>
     <tr>
-        <td>    
-            <a  target="<%= item.downloadUrl !== undefined ? item.downloadUrl : ""%>" href="<%= item.downloadUrl !== undefined ? item.downloadUrl : `files${item.path}${item.name}` %>"
+        <td>
+            <a target="<%= item.downloadUrl !== undefined ? item.downloadUrl : ""%>"
+                href="<%= item.downloadUrl !== undefined ? item.downloadUrl : `files${item.path}${item.name}` %>"
                 class="btn btn-light">
-                <% if (item.downloadUrl === undefined ) { %>
+                <% if (item.downloadUrl===undefined ) { %>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-folder" viewbox="0 0 16 16">
                         <path
@@ -19,7 +20,7 @@
                             <%= item.name %>
             </a>
         </td>
-        
+
         <td>
             <button data-bs-toggle="modal" data-bs-target="#deleteModal<%= item.internalName %>"
                 class="badge bg-secondary-outline rounded-pill">
@@ -34,7 +35,8 @@
 </tbody>
 
 <!--DeleteModal-->
-<div class="modal fade" id="deleteModal<%= item.internalName %>" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteModal<%= item.internalName %>" tabindex="-1" aria-labelledby="deleteModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -51,12 +53,11 @@
                     <input class="form-control input-lg" name="filename" style="display: none;"
                         value="<%= item.name %>">
                     <input class="form-control input-lg" name="id" style="display: none;" value="<%= item.id %>">
-                    <input class="form-control input-lg" name="type" style="display: none;" value="<%= item.downloadUrl === undefined ? 'directory' : 'file' %>">
+                    <input class="form-control input-lg" name="type" style="display: none;"value="<%= item.downloadUrl === undefined ? 'directory' : 'file' %>">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <input type="submit" class="btn btn-primary">
                 </form>
             </div>
         </div>
     </div>
-</div>
 </div>

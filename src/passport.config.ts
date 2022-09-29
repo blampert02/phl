@@ -4,11 +4,11 @@ import { Request } from 'express';
 import passport from 'passport';
 import OAuth2 from 'passport-google-oauth2';
 import { URL } from 'url';
-import { google } from 'googleapis';
+import fs from 'fs';
+import path from 'path';
 
 const GoogleStrategy = OAuth2.Strategy;
-
-export const oauth2Client = new google.auth.OAuth2(OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET);
+const CREDENTIALS_PATH = path.join(__dirname, 'credentials.json');
 
 passport.serializeUser(function (user, done) {
   done(null, user);
@@ -23,13 +23,27 @@ export type OAuth2Credentials = {
   refreshToken: string;
 };
 
-const internalOAuth2Credentials: OAuth2Credentials = {
-  token: '',
-  refreshToken: '',
-};
+async function saveCredentials(filepath: string, credentials: OAuth2Credentials): Promise<void> {
+  fs.writeFile(filepath, JSON.stringify(credentials), (err) => {
+    if(err) return Promise.reject(err.message);
+    return Promise.resolve();
+  });
+}
 
-export function getOAuth2Credentials(): OAuth2Credentials {
-  return internalOAuth2Credentials;
+async function getCredentials(filepath: string): Promise<OAuth2Credentials | undefined> {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filepath, { encoding: 'utf-8' }, (err, data) => {
+      if(err) {
+        resolve(undefined)
+        return;
+      }
+      resolve(<OAuth2Credentials>JSON.parse(data));
+    });
+  });
+}
+
+export async function getOAuth2Credentials(): Promise<OAuth2Credentials> {
+  return await getCredentials(CREDENTIALS_PATH) ?? { token: '', refreshToken: '' };
 }
 
 export async function isTokenValid(token: string): Promise<boolean> {
@@ -58,14 +72,17 @@ export async function renewToken(refreshToken: string): Promise<boolean> {
 
   if (response.status !== 200) return false;
 
-  const credentials = await response.json();
+  const body = await response.json();
   // SIDE EFFECT -> This updates the internal OAuth2 credentials since the them are stored in memory!
-  internalOAuth2Credentials.token = credentials.access_token;
+  const credentials = await getCredentials(CREDENTIALS_PATH);
+  saveCredentials(CREDENTIALS_PATH, {
+    token: body.access_token,
+    refreshToken: credentials?.refreshToken ?? ""
+  })
   return true;
 }
 
-passport.use(
-  new GoogleStrategy(
+passport.use(new GoogleStrategy(
     {
       clientID: OAUTH2_CLIENT_ID,
       clientSecret: OAUTH2_CLIENT_SECRET,
@@ -73,16 +90,10 @@ passport.use(
       passReqToCallback: true,
     },
     function (request: Request, accessToken: string, refreshToken: string, profile: any, done: any) {
-      oauth2Client.setCredentials({
-        access_token: accessToken,
-        refresh_token: refreshToken,
+      saveCredentials(CREDENTIALS_PATH, {
+        token: accessToken,
+        refreshToken
       });
-      console.log(`Access token -> ${accessToken}`);
-      console.log(`Refresh token -> ${refreshToken}`);
-
-      internalOAuth2Credentials.token = accessToken;
-      internalOAuth2Credentials.refreshToken = refreshToken;
-
       return done(null, profile);
     }
   )

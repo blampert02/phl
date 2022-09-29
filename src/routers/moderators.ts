@@ -77,6 +77,7 @@ router.get('/', verifyCookies, verifyUserAccountStatus, async (req: Request, res
 	}
 
 	let moderators = await repository.fetchAllByType('moderator');
+	
 
 	moderators = moderators.map(moderator => {
 		return {

@@ -3,7 +3,7 @@ import { UserRecord } from 'firebase-admin/lib/auth/user-record';
 import firebaseAdmin from './firebase';
 import repository from './repositories/user';
 
-const firebaseAuth = firebaseAdmin.auth();
+export const  firebaseAuth = firebaseAdmin.auth();
 
 export async function deleteAccountById(uid: string) {
 	try {

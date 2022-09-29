@@ -53,9 +53,7 @@
 
                     <div
                         class="limit">
-
                         <!--Dropbox interface-->
-
                         <table class="table table-hover">
                             <thead>
                                 <tr>
@@ -83,41 +81,51 @@
                             </form>
                         </div>
                     </div>
-                </article>
+
+                </div>
             </div>
-        </div>
 
-        <!--Modal-->
-        <div class="modal fade" id="CreateFolderNodal" tabindex="-1" aria-labelledby="CreateFolderNodalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="CreateFolderNodalLabel">Create folder</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
+            <!--Modal-->
+            <div class="modal fade" id="CreateFolderNodal" tabindex="-1" aria-labelledby="CreateFolderNodalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="CreateFolderNodalLabel">Create folder</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
 
-                    <div class="modal-body">
-                        <form role="form" method="POST" action="/files/upload">
-                            <input type="hidden" name="_token" value="">
-                            <div class="form-group">
-                                <label class="control-label">Name</label>
-                                <p></p>
-                                <div>
-                                    <input type="text" class="form-control input-lg" name="name" placeholder="Folder name">
-                                    <input class="form-control input-lg" name="path" style="display: none;" value="<%= path %>">
-                                    <input class="form-control input-lg" name="parentDirectoryId" style="display: none;" value="<%= directoryId %>">
-                                    <input class="form-control input-lg" name="type" style="display: none;" value="directory">
-                                    <button style="margin-top: 16px;" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button style="margin-top: 16px;" type="submit" class="btn btn-primary">Create</button>
+                        <div class="modal-body">
+                            <form role="form" method="POST" action="/files/upload">
+                                <input type="hidden" name="_token" value="">
+                                <div class="form-group">
+                                    <label class="control-label">Name</label>
+                                    <p></p>
+                                    <div>
+                                        <input type="text" class="form-control input-lg" name="name" placeholder="Folder name">
+                                        <input class="form-control input-lg" name="path" style="display: none;" value="<%= path %>">
+                                        <input class="form-control input-lg" name="parentDirectoryId" style="display: none;" value="<%= directoryId %>">
+                                        <input class="form-control input-lg" name="type" style="display: none;" value="directory">
+                                        <button style="margin-top: 16px;" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button style="margin-top: 16px;" type="submit" class="btn btn-primary">Create</button>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
 
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <%- include("./templates/footer") %>
-    </body>
+            <%- include("./templates/footer") %>
 
-</html></main><script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script><script src="assets/vendor/php-email-form/validate.js"></script><script src="assets/vendor/quill/quill.min.js"></script><script src="assets/vendor/tinymce/tinymce.min.js"></script><script src="assets/vendor/simple-datatables/simple-datatables.js"></script><script src="assets/vendor/chart.js/chart.min.js"></script><script src="assets/vendor/apexcharts/apexcharts.min.js"></script><script src="assets/vendor/echarts/echarts.min.js"></script><script src="assets/js/main.js"></script></body></html>
+            <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+            <script src="assets/vendor/php-email-form/validate.js"></script>
+            <script src="assets/vendor/quill/quill.min.js"></script>
+            <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+            <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+            <script src="assets/vendor/chart.js/chart.min.js"></script>
+            <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+            <script src="assets/vendor/echarts/echarts.min.js"></script>
+            <script src="assets/js/main.js"></script>
+        </main>
+    </body>
+</html>

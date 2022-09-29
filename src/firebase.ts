@@ -1,8 +1,6 @@
 import firebaseAdmin from 'firebase-admin';
 import Path from 'path';
 
-
-
 firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert(
     Path.join(__dirname, '../service-account.json')

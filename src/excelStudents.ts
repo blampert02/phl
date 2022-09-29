@@ -22,6 +22,7 @@ type ColumnType =
 	| 'Birthdate'
 	| 'License'
 	| 'Level'
+	| 'Activity';
 
 export async function readExcelFile(buffer: Buffer, type: UserType): Promise<User[]> {
 	const workbook = new Excel.Workbook();
@@ -48,6 +49,7 @@ export async function readExcelFile(buffer: Buffer, type: UserType): Promise<Use
 		readColumnValues(getColumnByType(columns, 'Birthdate')),
 		readColumnValues(getColumnByType(columns, 'License')),
 		readColumnValues(getColumnByType(columns, 'Level')),
+		readColumnValues(getColumnByType(columns, 'Activity')),
 	]);
 
 	const nameValues = readValues[0];
@@ -64,7 +66,7 @@ export async function readExcelFile(buffer: Buffer, type: UserType): Promise<Use
 	const birthdateValues = readValues[11];
 	const isActiveValues = readValues[12].map(value => value.toLowerCase() === 'true');
 	const levelValues = readValues[13];
-
+	const activityFlag = readValues[14].map(value => value.toLowerCase() === 'true');
 	const rowsLength = nameValues.length;
 
 	let users: User[] = [];
@@ -87,6 +89,7 @@ export async function readExcelFile(buffer: Buffer, type: UserType): Promise<Use
 			address2: address2Values[index],
 			city: cityValues[index],
 			level: levelValues[index],
+			activityFlag: activityFlag[index],
 		};
 	}
 

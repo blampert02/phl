@@ -2,7 +2,6 @@ import './firebase';
 import mongoose from 'mongoose';
 import express, { Application, Request, Response } from 'express';
 import morgan from 'morgan';
-import dotenv from 'dotenv-safe';
 import chalk from 'chalk';
 import Path from 'path';
 import cookieParser from 'cookie-parser';
@@ -17,7 +16,7 @@ import repository from './repositories/user';
 import { AddressInfo } from 'net';
 import fileRepository from './repositories/file';
 import cors from 'cors';
-import { getSurveys, getFormById } from './models/survey';
+import { getSurveys, fetchFormById } from './models/survey';
 import passport from 'passport';
 import session from 'express-session';
 import { getOAuth2Credentials, isTokenValid, renewToken } from './passport.config';
@@ -32,7 +31,6 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
-
 app.use(
   session({
     secret: 'this_is_a_secret',
@@ -54,15 +52,6 @@ app.use('/admins', adminRouter);
 app.use('/teachers', teacherRouter);
 app.use('/files', filesRouter);
 app.use('/forum', forumRouter);
-
-const dotEnvResult = dotenv.config();
-
-if (dotEnvResult.error) {
-  console.error('The environment variables could not be loaded ❌');
-  console.error(dotEnvResult.error.message);
-}
-
-console.log('Environment variables has been loaded successfully ✔');
 
 mongoose
   .connect(process.env.MONGO_DB_URL!)
@@ -122,21 +111,18 @@ app.get('/privacy', (_req: Request, res: Response) => {
 });
 
 app.get('/surveys', async (req: Request, res: Response) => {
-  await getFormById('1IPzUL0kl5R35zfAIIlWSYNyBKZo4Kadsmt6EaShD4y8');
-  const credentials = getOAuth2Credentials();
+  const credentials = await getOAuth2Credentials();
   if (!(await isTokenValid(credentials.token))) {
     const success = await renewToken(credentials.refreshToken);
     if (!success) return res.redirect('/google');
   }
 
-
-  const surveys = await getSurveys('1IPzUL0kl5R35zfAIIlWSYNyBKZo4Kadsmt6EaShD4y8');
+  const surveys = await getSurveys(credentials.token, '1IPzUL0kl5R35zfAIIlWSYNyBKZo4Kadsmt6EaShD4y8');
   const user = req.cookies['auth']['user'];
-
-  console.log(surveys);
 
   return res.render('surveys', { user, surveys: JSON.stringify(surveys) });
 });
+
 app.get('/login', (req: Request, res: Response) => {
   if (req.cookies['auth']) {
     res.redirect('/');
@@ -190,7 +176,7 @@ app.get('/files-all', async (req: Request, res: Response) => {
 });
 
 app.get('/test', async (req: Request, res: Response) => {
-  const credentials = getOAuth2Credentials();
+  const credentials = await getOAuth2Credentials();
   const success = await isTokenValid(credentials.token);
   const newToken = await renewToken(credentials.refreshToken);
 
@@ -204,5 +190,3 @@ const server = app.listen(process.env.PORT, () => {
   const { address, port } = server.address() as AddressInfo;
   console.log(chalk.blue(`Server up and running on http://${address}:${port} 🚀`));
 });
-
-console.table(dotEnvResult.parsed);

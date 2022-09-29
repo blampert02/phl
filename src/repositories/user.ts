@@ -1,6 +1,7 @@
 import { firestore } from '../firebase';
 import firebaseAdmin from 'firebase-admin';
 import { User, UserType } from '../models/user';
+import { firebaseAuth } from '../auth'
 
 interface UpdateUserInfo {
 	firstName: string;
@@ -9,6 +10,7 @@ interface UpdateUserInfo {
 	phoneNumber?: string;
 	address2?: string;
 	isActive: boolean;
+	email: string;
 }
 
 interface UpdateStudentInfo extends UpdateUserInfo {
@@ -52,6 +54,7 @@ class UserRepository {
 
 	async update(id: string, userInfo: UpdateUserInfo) {
 		this.collection.doc(id).update(userInfo);
+		await firebaseAuth.updateUser(id, {email: userInfo.email})
 		console.log(userInfo);
 	}
 
@@ -186,6 +189,7 @@ class UserRepository {
 			city: doc.city,
 			level: doc.level,
 			inss: doc.inss,
+			activityFlag: doc.activityFlag,
 		};
 	}
 }
