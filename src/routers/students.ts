@@ -133,7 +133,7 @@ router.get('/add', verifyCookies, verifyUserAccountStatus, (req: Request, res: R
 	//MinDate
 	const minDate = year - 100 + '-' + newMonth + '-' + newDay;	
 
-	res.render('Forms/addStudentForm', { user, lastDate, minDate });
+	res.render('Forms/addStudentForm', { user, lastDate, minDate, date });
 });
 
 router.get('/edit', verifyCookies, verifyUserAccountStatus, (req: Request, res: Response) => {

@@ -1,12 +1,49 @@
 import { firestore } from '../firebase';
 import firebaseAdmin from 'firebase-admin';
 import { Post, Message } from '../models/forum'
-
+import userRepository, {UserEventEmitter} from './user';
+import { notify } from '../pusher';
 
 class ForumRepository {
 	constructor(
-		private readonly collection: FirebaseFirestore.CollectionReference<firebaseAdmin.firestore.DocumentData>
+		readonly collection: FirebaseFirestore.CollectionReference<firebaseAdmin.firestore.DocumentData>
 	) {}
+
+	async bulkUpdate(userId: string): Promise<void> {
+		const user = await userRepository.findById(userId);
+		if(!user) return;
+		
+		const snapshot = await this.collection.where('senderId', '==', userId).get();
+		if(snapshot.empty) return;
+
+		const updateBatch = firestore().batch();
+
+		for(const forum of snapshot.docs) {
+			updateBatch.update(forum.ref, {
+				sender_firstName: user.firstName,
+				sender_lastName: user.lastName
+			});
+
+			const messagesQuerySnapshot = await this.collection.doc(forum.id).collection('messages').get();
+			if(messagesQuerySnapshot.empty) return;
+
+			const messageUpdateBatch = firestore().batch();
+
+			for(const message of messagesQuerySnapshot.docs) {
+				const { senderId } = message.data();
+				if(senderId === userId) {
+					messageUpdateBatch.update(message.ref, {
+						sender_firstName: user.firstName,
+						sender_lastName: user.lastName
+					});		
+				}
+			}
+
+			await messageUpdateBatch.commit();
+		}
+
+		await updateBatch.commit();
+	}
 
 	async save(post: Post): Promise<void> {
 		try {
@@ -86,5 +123,28 @@ class ForumRepository {
 }
 
 const instance = new ForumRepository(firestore().collection('threads'));
+
+UserEventEmitter.on('user-updated', async message => {
+	console.log('user-updated trigger!');
+	
+	const { id } = message;
+	await instance.bulkUpdate(id);
+});
+
+async function setListeners() {
+	instance.collection.onSnapshot(async querySnapshot => {
+		await notify('forum', { message: '' })
+
+		querySnapshot.docs.forEach(message => {
+
+		});
+
+	}, err => {
+		console.log(err);
+	});
+}
+
+setListeners()
+
 
 export default instance;

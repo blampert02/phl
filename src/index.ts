@@ -11,6 +11,7 @@ import teacherRouter from './routers/teachers';
 import moderatorRouter from './routers/moderators';
 import adminRouter from './routers/admins';
 import forumRouter from './routers/forum';
+import newsRouter from './routers/news'
 import filesRouter from './routers/files';
 import repository from './repositories/user';
 import { AddressInfo } from 'net';
@@ -48,6 +49,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use('/students', studentRouter);
 app.use('/moderators', moderatorRouter);
+app.use('/news', newsRouter);
 app.use('/admins', adminRouter);
 app.use('/teachers', teacherRouter);
 app.use('/files', filesRouter);
@@ -65,6 +67,7 @@ mongoose
 
 app.get('/', verifyCookies, verifyUserAccountStatus, (req: Request, res: Response) => {
   const user = req.cookies['auth']['user'];
+
   res.render('index', { user });
 });
 
@@ -146,7 +149,7 @@ app.post('/authenticate', async (req: Request, res: Response) => {
   if (isUserAllowedToLogin) {
     console.log('LOGIN SUCCESS :D');
     res.cookie('auth', { user });
-    return res.redirect('/');
+    return res.redirect('/news');
   }
   console.error('---->> This user is not allowed to Login or it doesnt exist. <<----');
   return res.redirect('/login');

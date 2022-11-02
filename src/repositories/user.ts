@@ -2,6 +2,10 @@ import { firestore } from '../firebase';
 import firebaseAdmin from 'firebase-admin';
 import { User, UserType } from '../models/user';
 import { firebaseAuth } from '../auth'
+import forumRepository from './forum';
+import { EventEmitter } from 'stream';
+
+export const UserEventEmitter = new EventEmitter();
 
 interface UpdateUserInfo {
 	firstName: string;
@@ -53,8 +57,9 @@ class UserRepository {
 	}
 
 	async update(id: string, userInfo: UpdateUserInfo) {
-		this.collection.doc(id).update(userInfo);
-		await firebaseAuth.updateUser(id, {email: userInfo.email})
+		await this.collection.doc(id).update(userInfo);
+		await firebaseAuth.updateUser(id, {email: userInfo.email});
+		UserEventEmitter.emit('user-updated', { id });
 		console.log(userInfo);
 	}
 
@@ -190,6 +195,7 @@ class UserRepository {
 			level: doc.level,
 			inss: doc.inss,
 			activityFlag: doc.activityFlag,
+			lastTimeActivity: doc.lastTimeActivity,
 		};
 	}
 }

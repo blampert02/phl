@@ -14,10 +14,9 @@ const router = express.Router();
 
 
 router.get('/add', verifyCookies, verifyUserAccountStatus, (req: Request, res: Response) => {
-
 	const user = req.cookies['auth']['user'];
-	res.render('Forms/addModeratorForm', { user });
 
+	res.render('Forms/addModeratorForm', { user });
 });
 
 router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {
@@ -32,19 +31,17 @@ router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, 
 });
 
 router.post('/', async (req: Request, res: Response) => {
-
 	await signUp(req.body.email, req.body.password, 'moderator', req.body);
+	
 	res.redirect('/moderators');
-
 });
 
 router.post('/delete', async (req: Request, res: Response) => {
-
 	const id = <string>req.query.id;
 	await repository.deleteById(id);
 	await deleteAccountById(id);
-	res.redirect('/moderators');
 
+	res.redirect('/moderators');
 });
 
 router.post('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {

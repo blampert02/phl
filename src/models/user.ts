@@ -18,6 +18,7 @@ export type User = {
   level?: string; //Students
   address2?: string;//All
   inss?: string; //Teachers
+  lastTimeActivity: string;
   activityFlag: boolean;
 };
 
@@ -40,6 +41,7 @@ export function createUser(id: string, type: UserType, info: any): User {
     city: info.city,
     level: info.level,
     inss: info.inss,
+    lastTimeActivity: info.lastTimeActivity,
     activityFlag: info.activityFlag == 'true',
   };
 }

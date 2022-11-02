@@ -1,32 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Potter's House Academy</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
+        <title>Potter's House Academy</title>
+        <meta content="" name="description">
+        <meta content="" name="keywords">
 
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-    <link href="https://fonts.gstatic.com" rel="preconnect">
-    <link
-        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-        rel="stylesheet">
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
-    <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
-    <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
-    <link href="assets/css/style.css" rel="stylesheet">
-</head>
+        <link href="assets/img/favicon.png" rel="icon">
+        <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+        <link href="https://fonts.gstatic.com" rel="preconnect">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+        <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+        <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+        <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+        <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
+        <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+        <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+        <link href="assets/css/style.css" rel="stylesheet">
+    </head>
 
-<body>
-    <%- include("./templates/navbar") %>
+    <body>
+        <%- include("./templates/navbar") %>
         <main id="main" class="main">
             <div class="container">
                 <div class="card-title text-center">
@@ -35,25 +33,30 @@
                     </div>
                 </div>
                 <!--Search bar-->
-                <ul class="nav col-md-4 justify-content-flex list-unstyled d-flex">
-                    <li class="ms-3">
-                        <a class="text-muted" href="/students"><svg xmlns="http://www.w3.org/2000/svg" width="40"
-                                height="40" class="bi bi-house-door-fill" viewBox="0 0 16 16"
-                                location.href="/students/">
-                                <path
-                                    d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5z" />
-                            </svg></a>
-                    </li>
-                    <form class="d-flex" action="/students" method="get">
-                        <li>
-                            <input name="search" class="form-control me-2" type="search" placeholder="Search"
-                                aria-label="Search">
+
+                <div class="row">
+                    <div class="col-sm-8">
+                        <li  class="list-unstyled">
+                            <a class="text-muted" href="/students">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                                  </svg>
+                            </a>
                         </li>
-                        <li>
-                            <button class="btn btn-outline-primary" type="submit">Search</button>
-                        </li>
-                    </form>
-                </ul>
+                    </div>
+                    <div class="col-sm-4">
+                        <form class="d-flex" action="/students" method="get">
+                            <li class="list-unstyled">
+                                <input name="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                            </li>
+                            <li class="list-unstyled">
+                                <button class="btn btn-outline-primary" type="submit">Search</button>
+                            </li>
+                        </form>
+                    </div>
+                </div>
+
                 <!--Search bar-->
                 <table class="table table-hover">
                     <thead>
@@ -71,7 +74,7 @@
                     <ul>
                         <% students.forEach(function(user){ %>
                             <%- include('./templates/userRows', {user}); %>
-                                <% }); %>
+                        <% }); %>
                     </ul>
                 </table>
 
@@ -81,61 +84,57 @@
                     <input name="file_data" class="form-control" type="file" id="formFile" accept=".xls,.xlsx">
                     <input type="submit" class="btn btn-outline-secondary" id="inputGroupFileAddon04">
                 </form>
-
+                <br>
                 <div class="d-grid gap-2">
                     <div class="col text-center">
-                        <button id="AddStudentButton" class="btn btn-primary w-50" class="btn btn-primary"
-                            type="button">Add a new student</button>
+                        <button id="AddStudentButton" class="btn btn-warning w-50" type="button">Add a new student</button>
                     </div>
                 </div>
             </div>
             <%- include("./templates/footer") %>
         </main>
-</body>
+    </body>
 
-<script type="text/javascript">
-    document.getElementById("AddStudentButton").onclick = function () {
-        location.href = "/students/add";
-    };
-</script>
+    <script type="text/javascript">
+        document.getElementById("AddStudentButton").onclick = function () {
+            location.href = "/students/add";
+        };
+    </script>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
-<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
-<script type="module">
-    // Enable pusher logging - don't include this in production
-    Pusher.logToConsole = true;
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
+    <script type="module">
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
 
-    const pusher = new Pusher('598286a2c69ac238f324', { cluster: 'us2' });
+        const pusher = new Pusher('598286a2c69ac238f324', {cluster: 'us2'});
 
-    const channel = pusher.subscribe('default');
+        const channel = pusher.subscribe('default');
 
-    channel.bind('importing', function (data) {
-        switch (data.status) {
+        channel.bind('importing', function (data) {
+            switch (data.status) {
 
-            case 'loading':
-                break;
-            case 'done':
-                Swal.fire(
-                    'Good job!',
-                    'The file is uploaded, please reload the site',
-                    'success'
-                )
-                break;
-            case 'error':
-                Swal.fire({ title: 'Something went wrong', text: data.message, icon: 'error', confirmButtonText: 'Ok' })
-                break;
-        }
-    });
-</script>
-<script src="assets/js/main.js"></script>
-<script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
-<script src="assets/vendor/php-email-form/validate.js"></script>
-<script src="assets/vendor/quill/quill.min.js"></script>
-<script src="assets/vendor/tinymce/tinymce.min.js"></script>
-<script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
-<script src="assets/vendor/chart.js/chart.min.js"></script>
-<script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
-<script src="assets/vendor/echarts/echarts.min.js"></script>
-<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+                case 'loading':
+                    break;
+                case 'done':
+                    Swal.fire('Good job!', 'The file is uploaded, please reload the site', 'success')
+                    break;
+                case 'error':
+                    Swal.fire({title: 'Something went wrong', text: data.message, icon: 'error', confirmButtonText: 'Ok'})
+                    break;
+            }
+        });
+
+    </script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="assets/vendor/quill/quill.min.js"></script>
+    <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+    <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="assets/vendor/chart.js/chart.min.js"></script>
+    <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="assets/vendor/echarts/echarts.min.js"></script>
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 
 </html>

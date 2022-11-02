@@ -21,17 +21,17 @@ export type Post = {
   sender_lastName:string;
 };
 
-export function createPost(id: string, info: any): Post{
-  return {
-    id,
-    comment: info.comment,
-    main_tittle: info.main_tittle,
-    senderId: info.senderId,
-    timestamp: info.timestamp,
-    userImage: info.userImage,
-    messages: [],
-    sender_firstName: info.sender_firstName,
-    sender_lastName:info.sender_lastName,
-  };
+  export function createPost(id: string, info: any): Post{
+    return {
+      id,
+      comment: info.comment,
+      main_tittle: info.main_tittle,
+      senderId: info.senderId,
+      timestamp: info.timestamp,
+      userImage: info.userImage,
+      messages: [],
+      sender_firstName: info.sender_firstName,
+      sender_lastName:info.sender_lastName,
+    };
 }
 

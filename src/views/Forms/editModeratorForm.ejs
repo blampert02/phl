@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 
-                <form class="row g-3" action="/moderators" method="post">
+                <form class="row g-3" action="/moderators/<%= user.id %>" method="post">
                     <div class="col-md-6">
                         <label for="inputName" class="form-label">Name</label>
                         <input type="text" class="form-control" name="firstName" placeholder="Name" id="inputName" value="<%= user.firstName %>" required="true">
@@ -82,7 +82,7 @@
                     </div>
                     <p></p>
                     <div class="col text-center">
-                        <button id="submit-button" class="btn btn-primary w-50" type="submit" class="btn btn-default">
+                        <button id="submit-button" class="btn btn-warning w-50" type="submit" class="btn btn-default">
                             submit
                         </button>
                     </div>
