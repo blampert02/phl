@@ -1,4 +1,3 @@
-
 import express, { Request, Response } from 'express';
 import verifyCookies, { verifyUserAccountStatus } from '../middlewares/verifyCookies';
 import repository from '../repositories/news';
@@ -19,28 +18,25 @@ router.get('/add', verifyCookies, verifyUserAccountStatus, (req: Request, res: R
 
 router.post('/', upload.single('file_data'), verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {
 	const user = req.cookies['auth']['user'];
+	const newsId = req.body.id ?? nanoid();
 
-	if (req.file === undefined) {
-		console.log('Me sali :D');
+	let mediaUrl = undefined;
+
+	if (req.file) {
+		await bucket.upload(req.file.path, {
+			destination: `storage/${req.file.originalname}`,
+		});
 		
-		return res.redirect('/news');
+		const fileRef = bucket.file(`storage/${req.file.originalname}`);
+		await fileRef.makePublic();
+		mediaUrl = fileRef.publicUrl();
 	}
-	// Upload the file to the firebase storage
-	await bucket.upload(req.file.path, {
-		destination: `storage/${req.file.originalname}`,
-	});
 
-	const fileRef = bucket.file(`storage/${req.file.originalname}`);
-	await fileRef.makePublic();
-
-	const newsInfo = {
-        id: nanoid(),
+	const newsInfo: any = {
+        id: newsId,
         title: req.body.title,
         postContent: req.body.postContent,
-        media: fileRef.publicUrl(), 
-        postedTime: new Date(),
-        sender_firstName: user.firstName,
-        sender_lastName:user.lastName,
+        media: mediaUrl ?? "", 
       };
 
 	await repository.update(newsInfo);
@@ -66,6 +62,17 @@ router.get('/', verifyCookies, verifyUserAccountStatus, async (req: Request, res
 			editPath: `/news/${newItem.id}`,
 		};
 	});
+
+router.get('/:id', verifyCookies, verifyUserAccountStatus, async(req: Request, res: Response)=>{
+	const id = req.params.id;
+	const news = await repository.findById(id);
+
+	if (news === undefined) {
+		return res.status(404).json({ message: 'The requested resource was not found', status: 404, type: 'not_found' });
+	}
+
+	res.render('Forms/editNews', { user, news });
+});
 
 	return res.render('news', { user, news });
 });

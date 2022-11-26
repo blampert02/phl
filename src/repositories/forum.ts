@@ -99,6 +99,14 @@ class ForumRepository {
 		await this.collection.doc(postId).collection('messages').doc(messageId).delete();
 	}
 
+	async updatePost(postInfo: Post) {
+		await this.collection.doc(postInfo.id).set(postInfo);
+	}
+
+	async updateMessage(postId: string, messageInfo: Message) {
+		await this.collection.doc(postId).collection('messages').add(messageInfo);
+	}
+
 	async findById(id: string): Promise<Post | undefined> {
 		const querySnapshot = await this.collection.doc(id).get();
 

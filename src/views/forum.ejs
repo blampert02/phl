@@ -34,50 +34,82 @@
                     </div>
                 </div>
                 <ul>
-                    <% posts.forEach(function(post){ %>
-                        <%- include('./templates/posts.ejs', {post}); %>
-                    <% }); %>
-                </ul>
-
+                    <!-- #region -->
+                    <div class="container">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-8">
+                                    <a class="navbar-brand" href="#">
+                                        <img src="<%= posts.userImage %> " alt="" width="40" height="40" style="border-radius: 50%"></a>
+                                    <label for="exampleFormControlTextarea1" class="form-label">
+                                        <%= user.firstName %>
+                                        <%= user.lastName %>
+                                    </label>
+                                </div>
+                            </div>
+                            <br/>
+                            <!-- #region -->
+                            <div style="border: solid gray 1px; border-radius: 25px;padding: 5px;overflow: hidden;">
+                                <br>
+                                <form action="/forum/post/add" method="post">
+                                    <textarea name="comment" style="border: none; outline: nones; resize: none;" class="form-control" id="textArea" rows="3" placeholder="Write a comment here..."></textarea>
+                                    <button style="margin: 5px; border: none; background: none; float: right;" type="submit">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-send" viewbox="0 0 16 16">
+                                            <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
+                            <!-- #endregion -->
+                        </div>
+                        <br/>
+                        <% posts.forEach(function(post){ %>
+                            <%- include('./templates/posts.ejs', {post}); %>
+                        <% }); %>
+                    </ul>
+                    <!-- #endregion -->
+                </div>
+                <%- include("./templates/footer") %>
+            </main>
+            <!-- #region -->
+            <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+                <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header" style="background-color:red">
+                        <i class="bi bi-bell" style="color: white; "></i>
+                        <strong class="me-auto" style="color: white;">Alert</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        Se ha modificado el foro, por favor recargue la pagina
+                    </div>
+                    <br>
+                    <div class="col text-center">
+                        <button onclick="window.location.reload();" type="button" class="btn btn-outline-secondary">refresh</button>
+                    </div>
+                    <br>
+                </div>
             </div>
-            <%- include("./templates/footer") %>
-        </main>
-        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11" >
-            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-              <div class="toast-header" style="background-color:red">
-                <i class="bi bi-bell" style="color: white; "></i>
-                <strong class="me-auto" style="color: white;">Alert</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-              </div>
-              <div class="toast-body">
-                Se ha modificado el foro, por favor recargue la pagina 
-              </div>
-              <br>
-              <div class="col text-center">
-                <button  onClick="window.location.reload();"  type="button" class="btn btn-outline-secondary">refresh</button>
-              </div>
-              <br>
-            </div>
-          </div>
+            <!-- #endregion -->
+        </body>
+        <script src="assets/js/main.js"></script>
+        <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+        <script src="assets/vendor/php-email-form/validate.js"></script>
+        <script src="assets/vendor/quill/quill.min.js"></script>
+        <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+        <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+        <script src="assets/vendor/chart.js/chart.min.js"></script>
+        <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+        <script src="assets/vendor/echarts/echarts.min.js"></script>
+        <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
+        <script>
+            const pusher = new Pusher('598286a2c69ac238f324', {cluster: 'us2'});
+            const channel = pusher.subscribe('default');
+            var toastLiveExample = document.getElementById('liveToast')
+            channel.bind('forum', () => {
+                var toast = new bootstrap.Toast(toastLiveExample);
+                toast.show();
+            });
+        </script>
     </body>
-    <script src="assets/js/main.js"></script>
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
-    <script src="assets/vendor/php-email-form/validate.js"></script>
-    <script src="assets/vendor/quill/quill.min.js"></script>
-    <script src="assets/vendor/tinymce/tinymce.min.js"></script>
-    <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
-    <script src="assets/vendor/chart.js/chart.min.js"></script>
-    <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
-    <script src="assets/vendor/echarts/echarts.min.js"></script>
-    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
-    <script>
-        const pusher = new Pusher('598286a2c69ac238f324', { cluster: 'us2' });
-        const channel = pusher.subscribe('default');
-        var toastLiveExample = document.getElementById('liveToast')
-        channel.bind('forum', () => {
-            var toast = new bootstrap.Toast(toastLiveExample);
-            toast.show();
-        });
-    </script>
 </html>

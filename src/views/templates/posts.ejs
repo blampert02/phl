@@ -12,8 +12,8 @@
                         </label>
                     </div>
                     <div class="col-4">
-                        <button style="float: right;" data-bs-toggle="modal" data-bs-target="#deleteModal<%= post.id %>" class="badge bg-secondary-outline rounded-pill">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-trash" viewBox="0 0 16 16">
+                        <button style="margin: 5px; border: none; background: none; float: right;" data-bs-toggle="modal" data-bs-target="#deleteModal<%= post.id %>" class="badge bg-secondary-outline rounded-pill">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="bi bi-trash" viewbox="0 0 16 16">
                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
                                 <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
                             </svg>
@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <br/>
-                <span>
+                <span style="background-color: #f1f1f1; padding: 10px; border-radius: 25px;">
                     <%= post.comment %>
                 </span>
             </div>
@@ -29,36 +29,67 @@
             <!-- All the comments that already exist -->
             <ul class="list-group-flush">
                 <div class="container-sm">
-                    <ul>
-                        <% post.messages.forEach(function(message){ %>
-                            <%- include('./messages.ejs', { message, postId: post.id }); %>
-                        <% }); %>
-                    </ul>
-                    <br/>
-                </div>
-            </ul>
-        </div>
-    </div>
-    <br/>
-    <!--DeleteModal-->
-    <div class="modal fade" id="deleteModal<%= post.id %>" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Warning</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <span style="margin-bottom: 100px;">
-                        Do you really want to delete the post created by
-                        <%= post.sender_firstName %>?
-                    </span>
-                    <br/>
-                    <form role="form" method="POST" action="/forum/delete">
-                        <input class="form-control input-lg" name="id" style="display: none;" value="<%= post.id %>">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <input type="submit" class="btn btn-primary"></form>
+                    <div class="accordion" id="accordionFlush">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="flush-headingOne<%= post.id %>">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne<%= post.id  %>" aria-expanded="false" aria-controls="flush-collapseOne<%= post.id  %>">
+                                    Comments
+                                </button>
+                            </h2>
+                            <div id="flush-collapseOne<%= post.id %>" class="accordion-collapse collapse" aria-labelledby="flush-headingOne<%= post.id  %>" data-bs-parent="#accordionFlush">
+                                <div class="accordion-body">
+                                    <br>
+                                        <div class="row" style="display: flex;">
+                                            <ul>
+                                                <% post.messages.forEach(function(message){ %>
+                                                    <%- include('./messages.ejs', { message, postId: post.id }); %>
+                                                <% }); %>
+                                            </ul>
+                                            <!-- #region -->
+                                            <div style="border: solid gray 1px; border-radius: 25px;padding: 5px;overflow: hidden;">
+                                                <br>
+                                                <form action="/forum/messages/add" method="post">
+                                                    <input style="display: none;" type="text" name="postId" id="" value="<%=post.id%>">
+                                                    <textarea name="comment"style="border: none; outline: nones; resize: none;" class="form-control" id="textArea" rows="3" placeholder="Write a comment here..."></textarea>
+                                                    <button style="margin: 5px; border: none; background: none; float: right;" type="submit">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-send" viewbox="0 0 16 16">
+                                                            <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                                </div>
+                                                <!-- #endregion -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
                         </div>
-                    </div>
+                    </ul>
                 </div>
             </div>
+            <br/>
+
+            <!--DeleteModal-->
+            <div class="modal fade" id="deleteModal<%= post.id %>" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel">Warning</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <span style="margin-bottom: 100px;">
+                                Do you really want to delete the post created by
+                                <%= post.sender_firstName %>?
+                            </span>
+                            <br/>
+                            <form role="form" method="POST" action="/forum/delete">
+                                <input class="form-control input-lg" name="id" style="display: none;" value="<%= post.id %>">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <input type="submit" class="btn btn-primary"></form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>

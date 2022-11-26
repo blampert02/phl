@@ -49,7 +49,7 @@ class NewsRepository {
 		await this.collection.doc(id).delete();
 	}
 
-	async update(newsInfo: News) {
+	async update(newsInfo: any) {
 		await this.collection.doc(newsInfo.id).set(newsInfo);
 	}
 

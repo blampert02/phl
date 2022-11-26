@@ -1,9 +1,11 @@
+import { Timestamp } from '@google-cloud/firestore'
+
 export type Message = {
   id: string;
   comment: string;
   main_tittle: string;
   senderId: string; 
-  timestamp: string;
+  timestamp: Date;
   userImage: string;
   sender_firstName: string;
   sender_lastName:string;
@@ -14,7 +16,7 @@ export type Post = {
   comment: string;
   main_tittle: string;
   senderId: string;
-  timestamp: string;
+  timestamp: Date;
   userImage: string;
   messages: Message[];
   sender_firstName: string;

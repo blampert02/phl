@@ -9,8 +9,6 @@ import { readExcelFile } from '../excelTeachers';
 import { notify } from '../pusher';
 import multer from 'multer';
 
-
-
 const router = express.Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
