@@ -25,6 +25,8 @@ interface UpdateTeacherInfo extends UpdateUserInfo {
 	inss: string;
 }
 
+type SearchById = string | undefined | null;
+
 class UserRepository {
 	constructor(
 		private readonly collection: FirebaseFirestore.CollectionReference<firebaseAdmin.firestore.DocumentData>
@@ -98,18 +100,23 @@ class UserRepository {
 		return user;
 	}
 
-	async findByQuery(search: string, type: UserType): Promise<User[]> {
+	async findByQuery(search: SearchById, type: UserType): Promise<User[]> {
 		const users = await this.fetchAllByType(type);
-		const sanitize = (query: string) => query.toLowerCase().trim();
 
+		if(search === null || search === undefined) {
+			return users;
+		}
+
+		const sanitize = (query: string) => query.toLowerCase().trim();
 		const findByEmail = (user: User) => sanitize(user.email).includes(sanitize(search));
+		const findByUsername = (user: User) => sanitize(user.username).includes(sanitize(search));
 		const findByName = (user: User) => sanitize(user.firstName).includes(sanitize(search));
 		const findByLastName = (user: User) => sanitize(user.lastName).includes(sanitize(search));
 		const findByBranch = (user: User) => {
             const branch = (user.branch || 'undefined').toString();
             return sanitize(branch).includes(sanitize(search));
         };
-
+		
 		const findByShift = (user: User) => {
             const shift = (user.shift || 'undefined').toString();
             return sanitize(shift).includes(sanitize(search));
@@ -119,12 +126,12 @@ class UserRepository {
             const level = (user.level || 'undefined').toString();
             return sanitize(level).includes(sanitize(search));
         };
-        const filteredUsers = users.filter(
-            user => findByEmail(user) || findByName(user) || findByLastName(user) || findByLevel(user) || findByBranch(user) || findByShift(user)
+
+    const filteredUsers = users.filter(
+            user => findByEmail(user) || findByName(user) || findByLastName(user) || findByUsername(user) || findByLevel(user) || findByBranch(user) || findByShift(user)
         );
 
 		return filteredUsers;
-
 	}
 
 	async fetchAllByType(type: UserType): Promise<User[]> {

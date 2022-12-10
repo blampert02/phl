@@ -1,4 +1,5 @@
 import { take, } from 'lodash';
+import { Request } from 'express';
 
 type PaginationOptions<T> = {
 	page: number;
@@ -39,4 +40,10 @@ export function createPagination<T>({ page, limit, datasource }: PaginationOptio
 		datasource: result,
 		startingPoint
 	};
+}
+
+type Query = string | undefined;
+
+export function getQuery(key: string, req: Request): Query {
+	return <Query>req.query[key];
 }

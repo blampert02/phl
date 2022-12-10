@@ -89,6 +89,7 @@ router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, 
 	if (user === undefined) {
 		return res.status(404).json({ message: 'The requested resource was not found', status: 404, type: 'not_found' });
 	}
+	
 	res.render('Forms/editTeacherForm', { user });
 });
 
@@ -141,22 +142,20 @@ router.get('/', verifyCookies, verifyUserAccountStatus, async (req: Request, res
 	const user = req.cookies['auth']['user'];
 	
 	if (query) {
-		const filteredTeachers = await repository.findByQuery(query, 'teacher');
-		let teachers = await repository.fetchAllByType('teacher');
+		let filteredTeachers = await repository.findByQuery(query, 'teacher')
 
-		teachers = teachers.map(teacher => {
+		filteredTeachers = filteredTeachers.map(teacher => {
 			return {
 				...teacher,
 				deletePath: `/teachers/delete?id=${teacher.id}`,
-				editPath: `/teachers?search=${query}/${teacher.id}`
+				editPath: `/teachers/${teacher.id}`
 			};
 		});
-		console.log(query);
 		
-		return res.render('teachers', { user, teachers: filteredTeachers  });
+		return res.render('teachers', { user, teachers: filteredTeachers });
 	}
 	
-	let teachers = await repository.fetchAllByType('teacher');yield
+	let teachers = await repository.fetchAllByType('teacher');
 
 	teachers = teachers.map(teacher => {
 		return {
@@ -165,7 +164,6 @@ router.get('/', verifyCookies, verifyUserAccountStatus, async (req: Request, res
 			editPath: `/teachers/${teacher.id}`
 		};
 	});
-
 	
 	res.render('teachers', { user, teachers });
 });
