@@ -76,9 +76,30 @@
                             <%- include('./templates/userRows', {user}); %>
                         <% }); %>
                     </ul>
-                </table>
+                    <nav aria-label="...">
+                        <ul class="pagination">
+                            <% if (pagination.currentPage > 1) { %>
+                                <a class="page-link" href='/students?page=<%= pagination.currentPage - 1 %>'>Prev</a>
+                            <% } %> 
 
-                <!--Choose file button-->
+                            <%if (pagination.currentPage >= 10) { %>
+                                <a class="page-link" href=''>1</a>
+                            <% } %>
+
+                            <% for(var i = pagination.startingPoint; i < (pagination.startingPoint + 9); i++) { %>
+                                <% if (i > pagination.pages) { %>
+                                    <% continue %>
+                                <% } %>
+
+                                <% if (i > pagination.currentPage == i) { %>
+                                    <span class='bold'><%= i %></span>
+                                <% } else { %>
+                                    <a class="page-link" href='/students?page=<%= i %>'><%= i %></a>
+                                  <% } %>
+                             <% } %>
+                        </ul>
+                      </nav>
+                </table>
                 <label for="formFile" class="form-label">Import a student file</label>
                 <form action="/students/excel" method="post" enctype="multipart/form-data" class="input-group">
                     <input name="file_data" class="form-control" type="file" id="formFile" accept=".xls,.xlsx">

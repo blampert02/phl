@@ -1,6 +1,5 @@
 import { User, UserType } from './models/user';
 import Excel, { Worksheet } from 'exceljs';
-import path from 'path';
 import { takeRight } from 'lodash';
 
 function areEqual(columnName: string, actualColumnName: string): boolean {

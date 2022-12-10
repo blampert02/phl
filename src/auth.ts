@@ -2,6 +2,8 @@ import { createUser, User, UserType } from './models/user';
 import { UserRecord } from 'firebase-admin/lib/auth/user-record';
 import firebaseAdmin from './firebase';
 import repository from './repositories/user';
+import { userInfo } from 'os';
+import { values } from 'lodash';
 
 export const  firebaseAuth = firebaseAdmin.auth();
 
@@ -32,4 +34,13 @@ export async function signUp(
 		console.error(e);
 		return undefined;
 	}
+}
+
+export async function wipeUsers() {
+ const users = await firebaseAuth.listUsers();
+ const userUid = users.users.map(user => {
+	return user.uid
+ });
+
+ await firebaseAuth.deleteUsers(userUid);
 }

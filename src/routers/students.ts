@@ -10,6 +10,7 @@ import { readExcelFile } from '../excelStudents';
 import { notify } from '../pusher';
 import e from 'express';
 import { parse } from 'path';
+import { createPagination } from '../util';
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -81,22 +82,38 @@ router.get('/', verifyCookies, verifyUserAccountStatus, async (req: Request, res
 	const query = <string>req.query.search;
 	const user = req.cookies['auth']['user'];
 
-	if (query) {
-		const filteredStudents = await repository.findByQuery(query, 'student');
-		return res.render('students', { user, students: filteredStudents });
-	}
+	const students = await repository.fetchAllByType('student')
+		.then(data => data.map(student => {
+			return {
+				...student,
+				deletePath: `/students/delete?id=${student.id}`,
+				editPath: `/students/${student.id}`,
+			}
+		}));
 
-	let students = await repository.fetchAllByType('student');
-
-	students = students.map(student => {
-		return {
-			...student,
-			deletePath: `/students/delete?id=${student.id}`,
-			editPath: `/students/${student.id}`,
-		};
+	const result = createPagination({
+		page: <number>(req.query.page as unknown) || 1,
+		limit: <number>(req.query.limit as unknown) || 10,
+		datasource: students
 	});
 
-	return res.render('students', { user, students });
+	if (query) {
+		const filteredStudents = await repository.findByQuery(query, 'student');
+		return res.render('students', { user, students: filteredStudents, pagination: { 
+			currentPage: result.currentPage,
+			pages: result.pages,
+			initial: result.initial,
+			startingPoint: result.startingPoint
+		 }  });
+	}
+
+	console.log('total pages: ' + result.pages);
+	return res.render('students', { user, students: result.datasource, pagination: { 
+		currentPage: result.currentPage,
+		pages: result.pages,
+		initial: result.initial,
+		startingPoint: result.startingPoint
+	 } });
 });
 
 router.post('/delete', async (req: Request, res: Response) => {

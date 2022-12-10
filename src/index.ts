@@ -1,4 +1,5 @@
 import './firebase';
+import { firestore } from './firebase';
 import mongoose from 'mongoose';
 import express, { Application, Request, Response } from 'express';
 import morgan from 'morgan';
@@ -21,6 +22,8 @@ import { getSurveys, fetchFormById } from './models/survey';
 import passport from 'passport';
 import session from 'express-session';
 import { getOAuth2Credentials, isTokenValid, renewToken } from './passport.config';
+import { wipeUsers } from './auth';
+import { notify } from './pusher';
 
 const app = express();
 app.set('views', Path.join(__dirname, './views'));
@@ -188,6 +191,25 @@ app.get('/test', async (req: Request, res: Response) => {
     token: newToken,
   });
 });
+
+app.get('/get-users/', async (_req: Request, res: Response) => {
+  const snapshot = await firestore().collection('users').get();
+  const users = snapshot.docs.map(doc => doc.data());
+  return res.status(200).json(users);
+});
+
+app.get('/online', (req: Request, res: Response) => {
+  const user = req.cookies['auth']['user'];
+  return res.render('onlineUsers', { user });
+});
+
+firestore()
+  .collection('users')
+  .onSnapshot(async snapshot => {
+    await notify('users-update', { message: 'Synchronization is required' });
+  });
+
+  // wipeUsers().then(() => console.log('Users has been deleted')) ONLY FOR TESTING PURPOSES 
 
 const server = app.listen(process.env.PORT, () => {
   const { address, port } = server.address() as AddressInfo;

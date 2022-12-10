@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Potter's House Academy</title>
+    <link href="assets/img/favicon.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/index.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+</head>
+<script defer src="assets/js/main.js"></script>
+<script defer src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+<script defer src="https://js.pusher.com/7.0/pusher.min.js"></script>
+<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+<body>
+    <%- include("./templates/navbar") %>
+        <main id="main" class="main">
+            <script type="text/babel">
+                Pusher.logToConsole = true;
+                const pusher = new Pusher('598286a2c69ac238f324', { cluster: 'us2' });
+
+                const useUsers = () => {
+                    const [users, setUsers] = React.useState([]);
+                    const [isLoading, setIsLoading] = React.useState(true);
+
+                    React.useEffect(() => {
+                        fetch('/get-users')
+                            .then(response => response.json())
+                            .then(data => {
+                                setIsLoading(false)
+                                setUsers(prev => data)
+                            });
+                    }, []);
+
+                    React.useEffect(() => {
+                        const channel = pusher.subscribe('default');
+
+                        channel.bind('users-update', async (data) => {
+                            const response = await fetch('/get-users');
+                            const users = await response.json();
+                            setUsers(prev => users);
+                        });
+
+                        return () => {
+                            channel.unbind('users');
+                        };
+                    }, []);
+
+                    return { isLoading, users };
+                };
+
+                function UserItem({ user }) {
+                    const statusStyle = user.activityFlag ? 'item-status-active' : 'item-status-inactive'
+                    return (
+                            <div className={statusStyle}>
+                                <div className="item-name">{user.firstName} {user.lastName}</div>
+                            </div>
+                    );
+                }
+
+                function App() {
+                    const { users, isLoading } = useUsers();
+                    const data = _.sortBy(users, user => user.firstName);
+
+                    if(isLoading) {
+                        return <div>Loading...</div>
+                    }
+
+                    const activeUsers = data.filter(user => user.activityFlag === true)
+                        .map(user => <UserItem key={user.id} user={user} />);
+
+                    const inactiveUsers = data.filter(user => user.activityFlag === false)
+                        .map(user => <UserItem key={user.id} user={user} />);
+
+                    return (
+                        <div className='app'>
+                            <div>
+                                <h1>Active users</h1>
+                                <div className="container">{activeUsers}</div>
+                            </div>
+
+                            <div>
+                                <h1>Inactive users</h1>
+                                <div className="container">{inactiveUsers}</div>
+                            </div>
+                        </div>
+                    );
+                }
+                
+                const anotherRootNode = document.getElementById('main');
+                const anotherRoot = ReactDOM.createRoot(anotherRootNode);
+                anotherRoot.render(<App/>);
+            </script>
+        </main>
+</body>
+
+</html>

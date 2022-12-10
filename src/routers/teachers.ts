@@ -8,6 +8,7 @@ import EventEmitter from 'events';
 import { readExcelFile } from '../excelTeachers';
 import { notify } from '../pusher';
 import multer from 'multer';
+import findByQuery from '../repositories/user';
 
 const router = express.Router();
 const storage = multer.memoryStorage();
@@ -92,26 +93,24 @@ router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, 
 });
 
 router.post('/', async (req: Request, res: Response) => {
-
 	await signUp(req.body.email, req.body.password, 'teacher', req.body);
-	res.redirect('/teachers');
 
+	res.redirect('/teachers');
 });
 
 router.post('/delete', async (req: Request, res: Response) => {
-
 	const id = <string>req.query.id;
 	await repository.deleteById(id);
 	await deleteAccountById(id);
-	res.redirect('/teachers');
 
+	res.redirect('/teachers');
 });
 
 router.post('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {
-
 	const id = req.params.id;
 	const userInfo = createUser(id, 'teacher', req.body);
 	await repository.update(id, userInfo);
+
 	return res.redirect('/teachers');
 });
 
@@ -119,11 +118,21 @@ router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, 
 
 	const id = req.params.id;
 	const user = await repository.findById(id);
+	let searchUrl =  <string>req.query.search;
 
+	let teachers = await repository.fetchAllByType('teacher');
+	
 	if (user === undefined) {
-
 		return res.status(404).json({ message: 'The requested resource was not found', status: 404, type: 'not_found' });
 	}
+
+	teachers = teachers.map(teacher => {
+		return {
+			...teacher,
+			deletePath: `/teachers/delete?id=${teacher.id}`,
+			editPath: `/teachers/${teacher.id}`
+		};
+	});
 	return res.status(200).json(user);
 });
 
@@ -133,10 +142,21 @@ router.get('/', verifyCookies, verifyUserAccountStatus, async (req: Request, res
 	
 	if (query) {
 		const filteredTeachers = await repository.findByQuery(query, 'teacher');
-		return res.render('teachers', { user, teachers: filteredTeachers });
-	}
+		let teachers = await repository.fetchAllByType('teacher');
 
-	let teachers = await repository.fetchAllByType('teacher');
+		teachers = teachers.map(teacher => {
+			return {
+				...teacher,
+				deletePath: `/teachers/delete?id=${teacher.id}`,
+				editPath: `/teachers?search=${query}/${teacher.id}`
+			};
+		});
+		console.log(query);
+		
+		return res.render('teachers', { user, teachers: filteredTeachers  });
+	}
+	
+	let teachers = await repository.fetchAllByType('teacher');yield
 
 	teachers = teachers.map(teacher => {
 		return {
@@ -146,6 +166,7 @@ router.get('/', verifyCookies, verifyUserAccountStatus, async (req: Request, res
 		};
 	});
 
+	
 	res.render('teachers', { user, teachers });
 });
 
