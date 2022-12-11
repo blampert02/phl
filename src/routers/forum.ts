@@ -12,6 +12,7 @@ router.get('/', verifyCookies, verifyUserAccountStatus, async (req: Request, res
   posts.sort((x, y) => {
     return y.timestamp.toDate() - x.timestamp.toDate();
   });
+
   posts = posts.map(post => {
     return {
       ...post,
@@ -19,7 +20,6 @@ router.get('/', verifyCookies, verifyUserAccountStatus, async (req: Request, res
     }
   });
 
-  
   res.render('forum', { user, posts });
 });
 
@@ -34,9 +34,6 @@ router.post('/messages/add', async (req: Request, res: Response) =>{
   const user = req.cookies['auth']['user'];
   const postId = <string>req.body.postId;
   const messageId = req.body.id ?? nanoid();
-
-  console.log(req.body);
-  
 
   const messageInfo: Message ={
     id: messageId,

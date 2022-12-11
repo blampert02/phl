@@ -104,7 +104,10 @@ class ForumRepository {
 	}
 
 	async updateMessage(postId: string, messageInfo: Message) {
-		await this.collection.doc(postId).collection('messages').add(messageInfo);
+		await this.collection.doc(postId)
+			.collection('messages')
+			.doc(messageInfo.id)
+			.set(messageInfo);
 	}
 
 	async findById(id: string): Promise<Post | undefined> {
