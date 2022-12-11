@@ -43,7 +43,7 @@
                     <div>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1">Title</span>
-                            <input value="<%= news.title %>" maxlength="100" type="text" class="form-control" name="title" placeholder="Here you can place the title" aria-label="Title" id="inputTitle" aria-describedby="basic-addon1">
+                            <input onkeydown="return /[a-z]/i.test(event.key)" value="<%= news.title %>" maxlength="100" type="text" class="form-control" name="title" placeholder="Here you can place the title" aria-label="Title" id="inputTitle" aria-describedby="basic-addon1">
                         </div>
                         <br>
                         <div>
