@@ -209,7 +209,8 @@ firestore()
     await notify('users-update', { message: 'Synchronization is required' });
   });
 
-  // wipeUsers().then(() => console.log('Users has been deleted')) ONLY FOR TESTING PURPOSES 
+  //ONLY FOR TESTING PURPOSES 
+  //wipeUsers().then(() => console.log('Users has been deleted')) 
 
 const server = app.listen(process.env.PORT, () => {
   const { address, port } = server.address() as AddressInfo;

@@ -54,7 +54,6 @@ router.post('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request,
 });
 
 router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {
-
 	const id = req.params.id;
 	const user = await repository.findById(id);
 

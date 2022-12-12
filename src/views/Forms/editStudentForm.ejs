@@ -33,51 +33,51 @@
                 <figure class="text-center">
                     <h1 class="display-6"><strong>Students editing interface</strong></h1>
                 </figure>
-                <form class="row g-3" action="/students/<%= user.id %>" method="post">
+                <form class="row g-3" action="/students/<%= userFiltered.id %>" method="post">
                     <div class="col-md-6">
                         <label for="inputName" class="form-label">Name</label>
-                        <input type="text" class="form-control" name="firstName" placeholder="Name" id="inputName" value="<%= user.firstName %>" required="true"/>
+                        <input type="text" class="form-control" name="firstName" placeholder="Name" id="inputName" value="<%= userFiltered.firstName %>" required="true"/>
                     </div>
                     <div class="col-md-6">
                         <label for="inputLastName" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" name="lastName" placeholder="Last name" id="inputLastName" value="<%= user.lastName %>" required="true"/>
+                        <input type="text" class="form-control" name="lastName" placeholder="Last name" id="inputLastName" value="<%= userFiltered.lastName %>" required="true"/>
                     </div>
                     <div class="col-md-6">
                         <label for="inputPhone" class="form-label">Phone number</label>
-                        <input type="text" class="form-control" name="phoneNumber" value="<%= user.phoneNumber %>" placeholder="8765-4321" id="inputPhone" minlength="8" pattern="[0-9]{4}-[0-9]{4}" required="true">
+                        <input type="text" class="form-control" name="phoneNumber" value="<%= userFiltered.phoneNumber %>" placeholder="8765-4321" id="inputPhone" minlength="8" pattern="[0-9]{4}-[0-9]{4}" required="true">
                     </div>
                     <div class="col-md-6">
                         <label for="inputEmail4" class="form-label">Email</label>
-                        <input type="email" class="form-control" name="email" placeholder="pottershouse@email.com" id="inputEmail4" value="<%= user.email %>" required="true"/>
+                        <input type="email" class="form-control" name="email" placeholder="pottershouse@email.com" id="inputEmail4" value="<%= userFiltered.email %>" required="true"/>
                     </div>
                     <div class="col-md-6">
                         <label for="inputPassword4" class="form-label">Password</label>
-                        <input type="password" minlength="6" class="form-control" name="password" placeholder="Password" id="inputPassword4"  value="<%= user.password %>" required="true"/>
+                        <input type="password" minlength="6" class="form-control" name="password" placeholder="Password" id="inputPassword4"  value="<%= userFiltered.password %>" required="true"/>
                     </div>
                     <div class="col-md-6">
                         <label for="inputAge" class="form-label">Birthdate</label>
-                        <input type="date" class="form-control" name="birthDate" id="inputAge" value="<%= user.birthDate %>" min='<%= minDate %>' max='<%= lastDate %>' required="true"/>
+                        <input type="date" class="form-control" name="birthDate" id="inputAge" value="<%= userFiltered.birthDate %>" min='<%= minDate %>' max='<%= lastDate %>' required="true"/>
                     </div>
                     <div class="col-12">
                         <label for="inputAddress" class="form-label">Address</label>
-                        <input type="text" class="form-control" name="address" id="inputAddress" placeholder="1234 Main St" value="<%= user.address %>" required="true"/>
+                        <input type="text" class="form-control" name="address" id="inputAddress" placeholder="1234 Main St" value="<%= userFiltered.address %>" required="true"/>
                     </div>
                     <div class="col-12">
                         <label for="inputAddress2" class="form-label">Address 2</label>
-                        <input type="text" class="form-control" name="address2" id="inputAddress2" placeholder="Apartment, studio, or floor" value="<%= user.address2 %>"/>
+                        <input type="text" class="form-control" name="address2" id="inputAddress2" placeholder="Apartment, studio, or floor" value="<%= userFiltered.address2 %>"/>
                     </div>
                     <div class="col-md-6">
                         <label for="inputCity" class="form-label">City</label>
-                        <input type="text" class="form-control" name="city" id="inputCity" value="<%= user.city %>" required="true"/>
+                        <input type="text" class="form-control" name="city" id="inputCity" value="<%= userFiltered.city %>" required="true"/>
                     </div>
                     <div class="col-md-6">
                         <label for="inputBranch" class="form-label">Branch</label>
-                        <input type="text" class="form-control" name="branch" value="<%= user.branch %>" id="inputBranch" required="true"/>
+                        <input type="text" class="form-control" name="branch" value="<%= userFiltered.branch %>" id="inputBranch" required="true"/>
                     </div>
                     <div class="col-md-4">
                         <label for="inputState" class="form-label">Level</label>
                         <select id="inputState" name="level" class="form-select" required>
-                            <option><%= user.level %> </option>
+                            <option><%= userFiltered.level %> </option>
                             <option>Induction</option>
                             <option>Basic level (First level)</option>
                             <option>Intermediate level (Second level)</option>
@@ -87,7 +87,7 @@
                     <div class="col-md-4">
                         <label for="inputState" class="form-label">License</label>
                         <select id="inputState" name="isActive" class="form-select" required>
-                            <option><%= user.isActive %> </option>
+                            <option><%= userFiltered.isActive %> </option>
                             <option>true</option>
                             <option>false</option>
                         </select>
@@ -95,7 +95,7 @@
                     <div class="col-md-4">
                         <label for="inputState" class="form-label">Shift</label>
                         <select id="inputState" name="shift" class="form-select" required>
-                            <option><%= user.shift %></option>
+                            <option><%= userFiltered.shift %></option>
                             <option>Diario (8:00 am -10:00 am)</option>
                             <option>Diario (10:00 am -12:00 md)</option>
                             <option>Diario (1:15 pm -2:30 pm)</option>
@@ -108,7 +108,7 @@
                     </div>
                     <div class="col-md-6">
                         <label for="inputLastName" class="form-label">Username</label>
-                        <input type="text" class="form-control" name="username" placeholder="usernameLastName123" id="inputLastName" value="<%= user.username %>" required="true"/>
+                        <input type="text" class="form-control" name="username" placeholder="usernameLastName123" id="inputLastName" value="<%= userFiltered.username %>" required="true"/>
                     </div>
                     <p></p>
                     <div class="col text-center">

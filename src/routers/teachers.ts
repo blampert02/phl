@@ -82,15 +82,15 @@ router.get('/add', verifyCookies, verifyUserAccountStatus, (req: Request, res: R
 });
 
 router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {
-
+	const user = req.cookies['auth']['user'];
 	const id = req.params.id;
-	const user = await repository.findByIdAndType(id, 'teacher');
+	const userFiltered = await repository.findByIdAndType(id, 'teacher');
 
-	if (user === undefined) {
+	if (userFiltered === undefined) {
 		return res.status(404).json({ message: 'The requested resource was not found', status: 404, type: 'not_found' });
 	}
 	
-	res.render('Forms/editTeacherForm', { user });
+	res.render('Forms/editTeacherForm', { userFiltered, user });
 });
 
 router.post('/', async (req: Request, res: Response) => {
@@ -108,15 +108,15 @@ router.post('/delete', async (req: Request, res: Response) => {
 });
 
 router.post('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {
+	const user = req.cookies['auth']['user'];
 	const id = req.params.id;
 	const userInfo = createUser(id, 'teacher', req.body);
 	await repository.update(id, userInfo);
 
-	return res.redirect('/teachers');
+	return res.redirect('/teachers', user);
 });
 
 router.get('/:id', verifyCookies, verifyUserAccountStatus, async (req: Request, res: Response) => {
-
 	const id = req.params.id;
 	const user = await repository.findById(id);
 	let searchUrl =  <string>req.query.search;

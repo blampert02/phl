@@ -131,13 +131,14 @@ router.post('/update', async (req: Request, res: Response) => {
 });
 
 router.post('/delete', async (req: Request, res: Response) => {
-	if (req.body.type === 'file') {
-		const filename = await repository.findNameById(req.body.id);
+	const file = req.body;
+	if ( file.type === 'file') {
+		const fileName = await repository.findNameById(req.body.id);
 
-		if (!filename) res.redirect(`files${req.body.path}`);
+		if (!fileName) res.redirect(`files${req.body.path}`);
 
-		console.log(`Found filename: ${filename}`);
-		const fileRef = bucket.file(`storage/${filename}`);
+		console.log(`Found filename: ${fileName}`);
+		const fileRef = bucket.file(`storage/${fileName}`);
 
 		const exists = await fileRef.exists();
 
@@ -146,11 +147,11 @@ router.post('/delete', async (req: Request, res: Response) => {
 		}
 	}
 
-	await repository.delete(req.body.id);
+	await repository.delete(file.id);
 
 	eventEmitter.emit('file-uploaded');
 
-	return res.redirect(`files${req.body.path}`);
+	return res.redirect(`files${file.path}`);
 });
 
 export default router;
